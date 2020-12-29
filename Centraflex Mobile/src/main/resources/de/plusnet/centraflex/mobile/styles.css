@@ -1,0 +1,56 @@
+.root {
+	bordeaux: rgb(155, 20, 75);
+	dunkelblau: rgb(20,30,40);
+	dunkelblau05: rgb(243,243,244);
+	dunkelblau10: rgb(232,233,234);
+	dunkelblau40: rgb(161,165,169);
+	
+	rot: rgb(230,100,85);
+	gelb:rgb(255,200,130);
+	mint:rgb(50,170,190);
+	lila:rgb(125,85,195);
+	-fx-base: white;
+   -fx-background-color: dunkelblau05;
+   -jfxe-secondary-color: dunkelblau;
+}
+
+.navigation-pane {
+	-fx-background-color: dunkelblau;
+	-fx-text-fill: dunkelblau05;
+}
+.navigation-item {
+	-fx-text-fill: dunkelblau05;
+	-fx-stroke: red;
+	-fx-fill: pink;
+}
+.navigation-item .font-icon {
+	-fx-text-fill: dunkelblau05;
+	-fx-stroke: lime;
+	-fx-fill: lightgreen;
+}
+
+.text-subheader {
+	-fx-text-fill: bordeaux;
+}
+
+.card {
+	-fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);
+	-fx-border-width: 1px;
+	-fx-border-style: solid;
+	-fx-background-color: -fx-base;
+	-fx-padding: 0 0.5em 0 0.5em;
+}
+
+.card-action {
+	-fx-font-weight: bold;
+	-fx-border-width: 0px;
+	-fx-border-style: none;
+}
+
+.call-action-hangup {
+	-fx-text-fill: red;
+}
+
+.front-option {
+	-fx-padding: 0.3em;
+}

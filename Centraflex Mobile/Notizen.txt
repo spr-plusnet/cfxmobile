@@ -1,0 +1,5 @@
+Vier Bildschirme, die über untere Navigation oder Swipe gewechselt werden können
+1. Personen
+2. Aktivitäten
+3. Unterhaltungen
+4. Einstellungen

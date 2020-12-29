@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+        <RollingFile name="fileLogger" fileName="${sys:logdir}/centraflex-client-log.txt" filePattern="${sys:logdir}/centraflex-client-log.txt_%d{yyyyMMdd}.log.gz">
+            <ThresholdFilter level="INFO"/>
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%c] (%F:%L) - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <ThresholdFilter level="DEBUG"/>
+             <PatternLayout   pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%c] (%F:%L) - %m%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="debug" additivity="false">
+            <appender-ref ref="console" />
+        </Root>
+        <Logger name="prelle.jfx" level="trace" />
+        <Logger name="xsi.events" level="info" />
+        <Logger name="xsi.actions" level="info" />
+    </Loggers>
+</Configuration>

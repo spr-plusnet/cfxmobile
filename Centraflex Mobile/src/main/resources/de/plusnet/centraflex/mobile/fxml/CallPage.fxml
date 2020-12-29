@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.prelle.javafx.Backdrop?>
+<?import org.prelle.javafx.BackdropPage?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.TilePane?>
+
+<BackdropPage xmlns:fx="http://javafx.com/fxml"
+	fx:controller="de.plusnet.centraflex.mobile.CallPageController">
+	<backHeader>
+		<Label text="Back" />
+	</backHeader>
+	<backContent>
+		<GridPane hgap="5.0" vgap="5">
+			<children>
+				<CheckBox fx:id="roEnabled" mnemonicParsing="false" text="%checkbox.roEnabled" />
+				<TextField fx:id="roTarget" GridPane.columnIndex="1" text="bla"  style="-fx-max-width: 12em" />
+				<Label fx:id="cfHeading" text="%heading.callForwarding" GridPane.rowIndex="1" GridPane.columnSpan="2" />
+				<CheckBox fx:id="cfaEnabled" text="%checkbox.cfaEnabled" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+				<TextField fx:id="cfaTarget" text=""                     GridPane.columnIndex="1" GridPane.rowIndex="2"  style="-fx-max-width: 12em" />
+				<CheckBox fx:id="cfbEnabled" text="%checkbox.cfbEnabled" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+				<TextField fx:id="cfbTarget" text=""                     GridPane.columnIndex="1" GridPane.rowIndex="3"  style="-fx-max-width: 12em"/>
+				<CheckBox fx:id="cfnaEnabled" text="%checkbox.cfnaEnabled" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+				<TextField fx:id="cfnaTarget" text=""                     GridPane.columnIndex="1" GridPane.rowIndex="4"  style="-fx-max-width: 12em"/>
+				<CheckBox fx:id="cfnrEnabled" text="%checkbox.cfnrEnabled" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+				<TextField fx:id="cfnrTarget" text=""                     GridPane.columnIndex="1" GridPane.rowIndex="5"  style="-fx-max-width: 12em"/>
+			</children>
+			<VBox.margin>
+				<Insets />
+			</VBox.margin>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+			</padding>
+		</GridPane>
+	</backContent>
+	<header>
+		<Label styleClass="text-subheader" text="%page.title" />
+	</header>
+	<content>
+		<VBox maxHeight="-Infinity" maxWidth="-Infinity" fx:id="bxFront" spacing="5.0" VBox.vgrow="ALWAYS">
+			<children>
+				<HBox alignment="CENTER">
+					<children>
+						<TextField fx:id="tfDialTarget" />
+						<Button fx:id="btnDial" mnemonicParsing="false" text="%button.dial" style="-fx-background-color: green; -fx-text-fill:white"/>
+					</children>
+				</HBox>
+				<VBox fx:id="bxCurrentCalls" spacing="5.0"></VBox>
+				<HBox VBox.vgrow="ALWAYS" spacing="10">
+					<ListView fx:id="list" HBox.hgrow="SOMETIMES" style="-fx-min-width:13em; -fx-max-width:20em" />
+					<TilePane maxWidth="-Infinity" tileAlignment="TOP_LEFT" vgap="15" hgap="15" style="-fx-padding: 0.3em" HBox.hgrow="SOMETIMES">
+						<!-- Option 1 -->
+						<VBox id="paneDND" styleClass="front-option" maxWidth="-Infinity">
+							<children>
+								<CheckBox fx:id="cbDND" mnemonicParsing="false" text="%button.do_not_disturb" />
+								<Label fx:id="lbDND" text="">
+									<VBox.margin>
+										<Insets left="24.0" />
+									</VBox.margin>
+								</Label>
+							</children>
+						</VBox>
+						<!-- Option 2 -->
+						<VBox id="paneDNIS" styleClass="front-option" maxWidth="-Infinity" >
+							<children>
+								<Label text="%label.dnis" />
+								<ChoiceBox prefWidth="150.0" />
+							</children>
+						</VBox>
+						<!-- Option 3 -->
+						<VBox id="paneRingTarget" styleClass="front-option" maxWidth="-Infinity" >
+							<children>
+								<Label text="%label.ringtarget" />
+								<ChoiceBox fx:id="cbRingTarget" prefWidth="150.0" />
+							</children>
+						</VBox>
+					</TilePane>
+				</HBox>
+			</children>
+		</VBox>
+	</content>
+</BackdropPage>
