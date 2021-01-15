@@ -35,6 +35,10 @@
 .backdrop-back .label {
 	-fx-text-fill: lime;
 }
+.backdrop-back-content {
+  -fx-background-color: derive(-fx-base, -10%);
+	-fx-background-radius: 0;
+}
 .page-head {
   -fx-background-image: url(Logo_100.png);
   -fx-background-position: top right;
@@ -47,17 +51,21 @@
 
 .navigation-pane {
 	-fx-background-color: bordeaux;
-	-fx-text-fill: dunkelblau05;
+	-fx-text-fill: -fx-base;
+}
+.navigation-icon .symbol-icon-text {
+	-fx-fill: -fx-base;
 }
 .navigation-item {
-	-fx-text-fill: dunkelblau05;
-	-fx-stroke: red;
-	-fx-fill: pink;
+	-fx-text-fill: -fx-base;
 }
 .navigation-item .font-icon {
 	-fx-text-fill: dunkelblau05;
-	-fx-stroke: lime;
-	-fx-fill: lightgreen;
+}
+.navigation-item:selected {
+    -fx-border-width: 0px 0.3em 0px 0px;
+    -fx-border-color: complementary;
+    -fx-background-color: derive(bordeaux, +20%);
 }
 
 .text-subheader {

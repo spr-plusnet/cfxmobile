@@ -166,6 +166,9 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		cfnaTarget.setUserData(Setting.CFNA_TARGET);
 		cfnrTarget.setUserData(Setting.CFNR_TARGET);
 		
+		cbDND.setDisable(true);
+		cbCLID.setDisable(true);
+		
 	}
 
 	//-------------------------------------------------------------------
