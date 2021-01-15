@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import org.prelle.javafx.AppLayout;
-import org.prelle.javafx.BackdropPage;
 import org.prelle.javafx.ExtendedComponentBuilderFactory;
 import org.prelle.javafx.FlexibleApplication;
 import org.prelle.javafx.Page;
@@ -32,14 +31,14 @@ public class ScreenLoader {
 	}
 
 	//-------------------------------------------------------------------
-	public static BackdropPage loadCallPage(TelephonyService telephony) throws IOException {
+	public static Page loadCallPage(TelephonyService telephony) throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				CFXMobileMain.class.getResource("fxml/CallPage.fxml"),
 				ResourceBundle.getBundle("de.plusnet.centraflex.mobile.CallPage")
 				);
 		FXMLLoader.setDefaultClassLoader(FlexibleApplication.class.getClassLoader());
 		loader.setBuilderFactory(new ExtendedComponentBuilderFactory());
-		BackdropPage ret = loader.load();
+		Page ret = loader.load();
 		((CallPageController)loader.getController()).setComponent(ret, telephony);
 		return ret;
 	}

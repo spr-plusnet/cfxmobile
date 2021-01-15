@@ -15,6 +15,7 @@ import org.prelle.javafx.AppLayout.NavigationStyle;
 import org.prelle.javafx.CloseType;
 import org.prelle.javafx.FlexibleApplication;
 import org.prelle.javafx.NavigationItem;
+import org.prelle.javafx.NavigationPane;
 import org.prelle.javafx.Page;
 import org.prelle.javafx.SymbolIcon;
 
@@ -24,6 +25,7 @@ import de.centraflex.telephony.TelephonyService;
 import de.centraflex.telephony.TelephonyServiceFactory;
 import de.centraflex.telephony.config.xsi.XSIConfigParameters;
 import javafx.scene.control.MenuItem;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class CFXMobileMain extends FlexibleApplication implements CallControlServiceListener {
@@ -72,6 +74,16 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 		}
 	}
 
+	//-------------------------------------------------------------------
+	/**
+	 * @see org.prelle.javafx.FlexibleApplication#populateNavigationPane(org.prelle.javafx.NavigationPane)
+	 */
+	@Override
+	public void populateNavigationPane(NavigationPane drawer) {
+		// TODO Auto-generated method stub
+		drawer.getItems().add(navCalls);
+	}
+
     //-------------------------------------------------------------------
     /**
      * @see org.prelle.javafx.FlexibleApplication#start(javafx.stage.Stage)
@@ -79,6 +91,9 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
     @Override
     public void start(Stage stage) throws Exception {
        	super.start(stage);
+		Font foo =Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Atlas_Grotesk_Web_Light_Regular.ttf"), 12.0);
+		System.err.println("Loaded font "+foo);
+		Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Stratos_Web.ttf"), 12.0);
 //       	this.getAppLayout().setNavigationStyle(NavigationStyle.MOBILE);
        	stage.setWidth(360);
        	stage.setHeight(574);
@@ -97,8 +112,9 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 //        scene.getStylesheets().add(CFXMobileMain.class.getResource("styles.css").toExternalForm());
 //        stage.setScene(scene);
 //        stage.show();
+       	setStyle(stage.getScene(),FlexibleApplication.LIGHT_STYLE);
        	stage.getScene().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-  		getAppLayout().getNavigationPane().getItems().addAll(navCalls);
+//  		getAppLayout().getNavigationPane().getItems().addAll(navCalls);
 		getAppLayout().getNavigationPane().getSelectionModel().select(navCalls);
        
         prepareXSILogin();

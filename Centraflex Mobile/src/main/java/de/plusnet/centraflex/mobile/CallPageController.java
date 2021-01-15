@@ -16,13 +16,14 @@ import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.prelle.javafx.BackdropPage;
+import org.prelle.javafx.Page;
 import org.prelle.javafx.Card;
 import org.prelle.javafx.JavaFXConstants;
 import org.prelle.javafx.Persona;
 import org.prelle.javafx.SymbolIcon;
 
 import de.centraflex.callcontrol.Call;
+import de.centraflex.callcontrol.Call.Personality;
 import de.centraflex.callcontrol.CallControlService;
 import de.centraflex.callcontrol.events.CallControlEvent;
 import de.centraflex.callcontrol.events.CallControlServiceListener;
@@ -71,7 +72,7 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		String userAgent;
 		public RingTarget(RingTargetLocation loc) {
 			this.location = loc;
-			this.userAgent= "Alle Geräte";
+			this.userAgent= "allen Geräten";
 		}
 		public RingTarget(RingTargetLocation loc, String addr, String ua) {
 			this.location = loc;
@@ -83,7 +84,7 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		}
 	}
 	
-	private transient BackdropPage page;
+	private transient Page page;
 	
 	@FXML
 	private CheckBox roEnabled;
@@ -122,6 +123,10 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	@FXML
 	private VBox bxFront;
 	@FXML
+	private CheckBox cbDND;
+	@FXML
+	private ChoiceBox<String> cbCLID;
+	@FXML
 	private ChoiceBox<RingTarget> cbRingTarget;
 	
 	private transient TelephonyService telephony;
@@ -151,6 +156,16 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		list.prefWidthProperty().bind(((Region)list.getParent()).widthProperty());
 		
 		cfnrTarget.setPrefColumnCount(10);
+		
+		cfaEnabled.setUserData(Setting.CFA_ENABLED);
+		cfbEnabled.setUserData(Setting.CFB_ENABLED);
+		cfnaEnabled.setUserData(Setting.CFNA_ENABLED);
+		cfnrEnabled.setUserData(Setting.CFNR_ENABLED);
+		cfaTarget.setUserData(Setting.CFA_TARGET);
+		cfbTarget.setUserData(Setting.CFB_TARGET);
+		cfnaTarget.setUserData(Setting.CFNA_TARGET);
+		cfnrTarget.setUserData(Setting.CFNR_TARGET);
+		
 	}
 
 	//-------------------------------------------------------------------
@@ -177,25 +192,25 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			refreshSettings();
 		});
 		
+		//----- CFA -------------------------
 		cfaTarget.disableProperty().bind(cfaEnabled.selectedProperty().not());
-		cfaTarget.textProperty().addListener( (ov,o,n) -> {
-			logger.info("CFA target changed to '"+n+"'");
-			Map<Setting, Object> values = new HashMap<>();
-			values.put(Setting.CFA_ENABLED, cfaEnabled.isSelected());
-			if (n!=null && !n.isBlank())
-				values.put(Setting.CFA_TARGET, n);
-			telephony.getSettingService().configure(Service.CALL_FORWARDING_ALWAYS, values);
-			refreshSettings();
-		});
-		cfaEnabled.selectedProperty().addListener( (ov,o,n) -> {
-			logger.info("CFA active changed to '"+n+"'");
-			Map<Setting, Object> values = new HashMap<>();
-			values.put(Setting.CFA_ENABLED, n);
-			if (cfaTarget.getText()!=null && !cfaTarget.getText().isBlank())
-				values.put(Setting.CFA_TARGET, cfaTarget.getText());
-			telephony.getSettingService().configure(Service.CALL_FORWARDING_ALWAYS, values);
-			refreshSettings();
-		});
+		cfaTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_ALWAYS, cfaEnabled, cfaTarget));
+		cfaEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_ALWAYS, cfaEnabled, cfaTarget));
+		
+		//----- CFB -------------------------
+		cfbTarget.disableProperty().bind(cfbEnabled.selectedProperty().not());
+		cfbTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_BUSY, cfbEnabled, cfbTarget));
+		cfbEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_BUSY, cfbEnabled, cfbTarget));
+		
+		//----- CFNA -------------------------
+		cfnaTarget.disableProperty().bind(cfnaEnabled.selectedProperty().not());
+		cfnaTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NO_ANSWER, cfnaEnabled, cfnaTarget));
+		cfnaEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NO_ANSWER, cfnaEnabled, cfnaTarget));
+		
+		//----- CFNR -------------------------
+		cfnrTarget.disableProperty().bind(cfnrEnabled.selectedProperty().not());
+		cfnrTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NOT_REACHABLE, cfnrEnabled, cfnrTarget));
+		cfnrEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NOT_REACHABLE, cfnrEnabled, cfnrTarget));
 		
 		bxCurrentCalls.heightProperty().addListener( (ov,o,n) -> {
 			logger.info("Active Calls Height: "+n);
@@ -206,7 +221,20 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	}
 
 	//-------------------------------------------------------------------
-	public void setComponent(BackdropPage page, TelephonyService telephony) {
+	private void changeCallForwarding(Service serv, CheckBox cbAct, TextField tfTarget) {
+		logger.info(serv+" active changed");
+		Map<Setting, Object> values = new HashMap<>();
+		values.put((Setting)cbAct.getUserData(), cbAct.isSelected());
+		if (tfTarget.getText()!=null && !tfTarget.getText().isBlank())
+			values.put((Setting)tfTarget.getUserData(), tfTarget.getText());
+		if (telephony.getSettingService().configure(serv, values)) {
+			refreshSettings();
+		} else
+			logger.error("Failed changing "+serv);
+	}
+
+	//-------------------------------------------------------------------
+	public void setComponent(Page page, TelephonyService telephony) {
 		this.page = page;
 		this.telephony = telephony;
 		TelephonyServiceEventBus.addListener(this);
@@ -252,7 +280,9 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	private void refreshSettings() {
 		if (initializing)
 			return;
+		
 		Platform.runLater( () -> {
+			initializing = true;
 			StringBuffer header = new StringBuffer();
 			
 			Map<Setting, Object> ro = telephony.getSettingService().getConfiguration(Service.REMOTE_OFFICE);
@@ -270,27 +300,18 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 				roEnabled.setSelected( false);
 				roTarget.setText( "?");
 				roEnabled.setDisable(true);
-				page.setBackHeader(new Label("From Controller"));
+				page.setSecondaryHeader(new Label("From Controller"));
 			}
 			
 			/*
 			 * Call Forwarding Always
 			 */
-			Map<Setting, Object> cfa = telephony.getSettingService().getConfiguration(Service.CALL_FORWARDING_ALWAYS);
-			if (!cfa.isEmpty()) {
-				cfaEnabled.setSelected( (Boolean)cfa.get(Setting.CFA_ENABLED));
-				cfaTarget.setText( (String)cfa.get(Setting.CFA_TARGET));
-				cfaEnabled.setDisable(false);
-				if (cfaEnabled.isSelected()) {
-					header.append(", CFA aktiv");
-				}
-			} else {
-				cfaEnabled.setSelected( false);
-				cfaTarget.setText( "?");
-				cfaEnabled.setDisable(true);
-			}
+			updateService(Service.CALL_FORWARDING_ALWAYS, Setting.CFA_ENABLED, Setting.CFA_TARGET, cfaEnabled, cfaTarget, header);
+			updateService(Service.CALL_FORWARDING_BUSY, Setting.CFB_ENABLED, Setting.CFB_TARGET, cfbEnabled, cfbTarget, header);
+			updateService(Service.CALL_FORWARDING_NO_ANSWER, Setting.CFNA_ENABLED, Setting.CFNA_TARGET, cfnaEnabled, cfnaTarget, header);
+			updateService(Service.CALL_FORWARDING_NOT_REACHABLE, Setting.CFNR_ENABLED, Setting.CFNR_TARGET, cfnrEnabled, cfnrTarget, header);
 
-			page.setBackHeader(new Label(header.toString()));
+			page.setSecondaryHeader(new Label(header.toString()));
 
 			telephony.getProfileService().getDevices();
 			List<RingTarget> listRT = new ArrayList<RingTarget>();
@@ -310,7 +331,26 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			}
 			cbRingTarget.getItems().setAll(listRT);
 			cbRingTarget.getSelectionModel().select(0);
+			initializing = false;
 		});
+		
+	}
+	
+	//-------------------------------------------------------------------
+	private void updateService(Service service, Setting ENABLED, Setting TARGET, CheckBox cbEnable, TextField tfTarget, StringBuffer header) {
+		Map<Setting, Object> cfb = telephony.getSettingService().getConfiguration(service);
+		if (!cfb.isEmpty()) {
+			cbEnable.setSelected( (Boolean)cfb.get(ENABLED));
+			tfTarget.setText( (String)cfb.get(TARGET));
+			cbEnable.setDisable(false);
+			if (cbEnable.isSelected()) {
+				header.append(", "+ENABLED.name().substring(0, ENABLED.name().indexOf("_"))+" aktiv");
+			}
+		} else {
+			cbEnable.setSelected( false);
+			tfTarget.setText( "?");
+			cbEnable.setDisable(true);
+		}
 		
 	}
 	
@@ -347,13 +387,34 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	private void refreshCurrentCalls() {		
 		bxCurrentCalls.getChildren().clear();
 		for (Call call : telephony.getCallControlService().getActiveCalls()) {
+			logger.info("Call with state "+call.getState()+" in personality "+call.getPersonality()+" remote "+call.getRemoteParty());
+			
 			Card persona = new Card(call.getRemoteParty().getName());
-			persona.setSecondaryText(call.getRemoteParty().getAddress());
-			Button btnHold = new Button(ResourceI18N.get(RES, "call.hold"));
+			// Strip "tel:"
+			if (call.getRemoteParty().getAddress().startsWith("tel:")) {
+				persona.setSecondaryText(call.getRemoteParty().getAddress().substring(4));
+			} else {
+				persona.setSecondaryText(call.getRemoteParty().getAddress());
+			}
+			Button btnHold = new Button(ResourceI18N.get(RES, "call.hold"), new SymbolIcon("pause"));
 			btnHold.getStyleClass().addAll("card-action","call-action-hold");
-			Button btnHangup = new Button(ResourceI18N.get(RES, "call.hangup"));
+			Button btnHangup = new Button(ResourceI18N.get(RES, "call.hangup"), new SymbolIcon("stop"));
 			btnHangup.getStyleClass().addAll("card-action","call-action-hangup");
-			persona.getButtons().add(btnHold);
+			Button btnResume = new Button(ResourceI18N.get(RES, "call.resume"), new SymbolIcon("play"));
+			btnResume.getStyleClass().addAll("card-action","call-action-resume");
+			switch (call.getState()) {
+			case ALERTING:
+				if (call.getPersonality()==Personality.TERMINATOR) {
+					btnHangup.setText(ResourceI18N.get(RES, "call.reject"));
+				}
+				break;
+			case ACTIVE:
+				persona.getButtons().add(btnHold);
+				break;
+			case HELD:
+				persona.getButtons().add(btnResume);
+				break;
+			}
 			persona.getButtons().add(btnHangup);
 			bxCurrentCalls.getChildren().add(persona);
 			
@@ -364,6 +425,10 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			btnHold.setOnAction(ev -> {
 				logger.info("Hold call");
 				telephony.getCallControlService().holdCall(call);
+			});
+			btnResume.setOnAction(ev -> {
+				logger.info("Resume call");
+				telephony.getCallControlService().resumeCall(call);
 			});
 		}
 	}
@@ -406,7 +471,22 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		logger.info("Dial '"+target+"' with ring target "+cbRingTarget.getValue());
 		
 		CallControlService callCtrl = telephony.getCallControlService();
-		Call call = callCtrl.createCall(target);
+		Map<String,String> params = new HashMap<String, String>();
+		if (cbRingTarget.getValue()!=null) {
+			RingTarget target2 = cbRingTarget.getValue();
+			switch (target2.location) {
+			case Primary:
+				params.put("location", "Primary");
+				break;
+			case SharedCallAppearance:
+				params.put("location", target2.location.name());
+				params.put("locationAddress", target2.address);
+				break;
+			default:
+				break;
+			}
+		}
+		callCtrl.createCall(target, params);
 		refreshCurrentCalls();
 	}
 

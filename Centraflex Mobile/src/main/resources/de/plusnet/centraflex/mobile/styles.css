@@ -1,3 +1,20 @@
+.text-header {
+	-fx-font-family: 'Stratos';
+}
+.text-subheader {
+	-fx-font-family: 'Stratos';
+}
+.text-small-subheader, .title {
+	-fx-font-family: 'Stratos';
+	-fx-font-weight: 400;
+}
+.base {
+	-fx-font-family: 'Atlas Grotesk Web Light Regular';
+	-fx-font-weight: bold;
+}
+.text-body, .body {
+	-fx-font-family: 'Atlas Grotesk Web Light Regular';
+}
 .root {
 	bordeaux: rgb(155, 20, 75);
 	dunkelblau: rgb(20,30,40);
@@ -10,12 +27,26 @@
 	mint:rgb(50,170,190);
 	lila:rgb(125,85,195);
 	-fx-base: white;
-   -fx-background-color: dunkelblau05;
-   -jfxe-secondary-color: dunkelblau;
+	-fx-font-family: 'Atlas Grotesk Web Light Regular';
+}
+.backdrop-back-header {
+  -fx-background-color: bordeaux;
+}
+.backdrop-back .label {
+	-fx-text-fill: lime;
+}
+.page-head {
+  -fx-background-image: url(Logo_100.png);
+  -fx-background-position: top right;
+  -fx-background-size: 100px;
+  -fx-background-repeat: no-repeat;
+}
+.page-head .label {
+	-fx-text-fill: dunkelblau05;
 }
 
 .navigation-pane {
-	-fx-background-color: dunkelblau;
+	-fx-background-color: bordeaux;
 	-fx-text-fill: dunkelblau05;
 }
 .navigation-item {
@@ -45,10 +76,17 @@
 	-fx-font-weight: bold;
 	-fx-border-width: 0px;
 	-fx-border-style: none;
+	-fx-background-color: transparent;
+}
+.card-action:hover {
+	-fx-effect: dropshadow(three-pass-box, -fx-accent, 10, 0, 0, 0);
 }
 
 .call-action-hangup {
 	-fx-text-fill: red;
+}
+.call-action-hangup .symbol-icon-skin {
+	-fx-fill: red;
 }
 
 .front-option {
