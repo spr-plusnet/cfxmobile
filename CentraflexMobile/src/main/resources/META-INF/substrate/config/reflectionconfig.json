@@ -1,0 +1,36 @@
+[
+{
+  "name":"org.apache.logging.log4j.message.DefaultFlowMessageFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.logging.log4j.message.ReusableMessageFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"javafx.scene.control.ChoiceBox",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"javafx.scene.control.SeparatorMenuItem",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"javafx.scene.layout.VBox",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+
+
+{
+  "name":"de.plusnet.centraflex.mobile.CallPageController",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+}
+]
