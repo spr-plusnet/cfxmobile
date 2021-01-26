@@ -131,7 +131,8 @@
 				<configuration>
 					<bundlesList>
 					  <list>de.plusnet.centraflex.mobile.CFXMobileMain</list>
-						<list>org.prelle.javafx.JavaFXConstants</list>						
+						<list>org.prelle.javafx.JavaFXConstants</list>
+						<list>de.plusnet.centraflex.mobile.CallPage</list>						
 					</bundlesList>
 					<mainClass>${mainClassName}</mainClass>
 					<nativeImageArgs>
