@@ -8,15 +8,15 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Centraflex Mobile</name>
+	<name>CFXMobile</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>11</maven.compiler.release>
-		<javafx.version>15</javafx.version>
+		<javafx.version>16</javafx.version>
 		<javafx.plugin.version>0.0.5</javafx.plugin.version>
-		<client.plugin.version>0.1.35</client.plugin.version>
-		<attach.version>4.0.9</attach.version>
+		<client.plugin.version>0.1.39</client.plugin.version>
+		<attach.version>4.0.11</attach.version>
 		<mainClassName>de.plusnet.centraflex.mobile.CFXMobileMain</mainClassName>
 		<log4j.version>2.14.0</log4j.version>
 	</properties>
@@ -65,6 +65,16 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gluonhq.attach</groupId>
+			<artifactId>runtime-args</artifactId>
+			<version>${attach.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gluonhq.attach</groupId>
+			<artifactId>settings</artifactId>
+			<version>${attach.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gluonhq.attach</groupId>
 			<artifactId>statusbar</artifactId>
 			<version>${attach.version}</version>
 		</dependency>
@@ -85,6 +95,21 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>de.plusnet.centraflex</groupId>
+			<artifactId>libxsi</artifactId>
+			<version>2020.07</version>
+		</dependency>
+		<dependency>
+			<groupId>de.centraflex</groupId>
+			<artifactId>callcontrol-xsi</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.centraflex</groupId>
+			<artifactId>contacts-xsi</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>de.centraflex</groupId>
 			<artifactId>telephony-xsi</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -94,6 +119,17 @@
 			<artifactId>javafx-extensions</artifactId>
 			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.4.0-b180830.0438</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+      <groupId>com.sun.activation</groupId>
+      <artifactId>jakarta.activation</artifactId>
+      <version>1.2.2</version>
+    </dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
@@ -105,6 +141,14 @@
 		<repository>
 			<id>Gluon</id>
 			<url>https://nexus.gluonhq.com/nexus/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>jfrog</id>
+			<url>https://rpgframework.jfrog.io/artifactory/RPGFramework</url>
+		</repository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/groups/public</url>
 		</repository>
 	</repositories>
 
@@ -130,10 +174,13 @@
 				<version>${client.plugin.version}</version>
 				<configuration>
 					<bundlesList>
-					  <list>de.plusnet.centraflex.mobile.CFXMobileMain</list>
+						<list>de.plusnet.centraflex.mobile.CFXMobileMain</list>
 						<list>org.prelle.javafx.JavaFXConstants</list>
-						<list>de.plusnet.centraflex.mobile.CallPage</list>						
+						<list>de.plusnet.centraflex.mobile.CallPage</list>
+						<list>javax.xml.bind.Messages</list>
 					</bundlesList>
+					<!--enableSWRendering>true</enableSWRendering-->
+					<!--javafxStaticSdkVersion>16-ea+gvm31</javafxStaticSdkVersion-->
 					<mainClass>${mainClassName}</mainClass>
 					<nativeImageArgs>
 						<arg>-Duser.language=de</arg>
@@ -145,6 +192,7 @@
 						<list>display</list>
 						<list>lifecycle</list>
 						<list>local-notifications</list>
+						<list>settings</list>
 						<list>statusbar</list>
 						<list>storage</list>
 					</attachList>
@@ -208,6 +256,13 @@
 				</dependency>
 				<dependency>
 					<groupId>com.gluonhq.attach</groupId>
+					<artifactId>settings</artifactId>
+					<version>${attach.version}</version>
+					<classifier>desktop</classifier>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>com.gluonhq.attach</groupId>
 					<artifactId>storage</artifactId>
 					<version>${attach.version}</version>
 					<classifier>desktop</classifier>
@@ -230,6 +285,10 @@
 	</profiles>
 
 	<pluginRepositories>
+		<pluginRepository>
+			<id>snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</pluginRepository>
 		<pluginRepository>
 			<id>gluon-releases</id>
 			<url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>

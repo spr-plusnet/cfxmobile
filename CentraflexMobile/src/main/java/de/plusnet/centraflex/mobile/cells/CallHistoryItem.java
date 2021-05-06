@@ -1,4 +1,4 @@
-package de.plusnet.centraflex.mobile;
+package de.plusnet.centraflex.mobile.cells;
 
 import de.centraflex.telephony.CallHistoryEntry;
 
@@ -19,7 +19,7 @@ public class CallHistoryItem implements CallListItem {
 
 	//-------------------------------------------------------------------
 	/**
-	 * @see de.plusnet.centraflex.mobile.CallListItem#getName()
+	 * @see de.plusnet.centraflex.mobile.cells.CallListItem#getName()
 	 */
 	@Override
 	public String getName() {

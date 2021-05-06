@@ -22,10 +22,10 @@
 	title="%page.title"
 	mode="BACKDROP">
 	<secondaryHeader>
-		<Label text="Back" />
+		<Label fx:id="test" text="Back" />
 	</secondaryHeader>
 	<secondaryContent>
-		<GridPane hgap="5.0" vgap="5">
+		<GridPane fx:id="backOptions" hgap="5.0" vgap="5" styleClass="back-option" >
 			<children>
 				<CheckBox fx:id="roEnabled" mnemonicParsing="false" text="%checkbox.roEnabled" />
 				<TextField fx:id="roTarget" GridPane.columnIndex="1" text="bla"  style="-fx-max-width: 12em" />
@@ -61,7 +61,7 @@
 					<ListView fx:id="list" style="-fx-min-width:13em; -fx-pref-width:18em; -fx-max-width:20em" HBox.hgrow="ALWAYS" />
 					<TilePane tileAlignment="TOP_LEFT" vgap="15" hgap="15" style="-fx-padding: 0.3em; -fx-max-width:40em" HBox.hgrow="SOMETIMES">
 						<!-- Option 1 -->
-						<VBox id="paneDND" styleClass="front-option" maxWidth="-Infinity">
+						<VBox id="paneDND" styleClass="front-option" maxWidth="-Infinity" visible="false" managed="false">
 							<children>
 								<CheckBox fx:id="cbDND" mnemonicParsing="false" text="%button.do_not_disturb" />
 								<Label fx:id="lbDND" text="">
@@ -75,14 +75,14 @@
 						<VBox id="paneDNIS" styleClass="front-option" maxWidth="-Infinity" >
 							<children>
 								<Label text="%label.dnis" />
-								<ChoiceBox fx:id="cbCLID" prefWidth="140.0" />
+								<ChoiceBox fx:id="cbCLID" prefWidth="200.0" />
 							</children>
 						</VBox>
 						<!-- Option 3 -->
 						<VBox id="paneRingTarget" styleClass="front-option" maxWidth="-Infinity" >
 							<children>
 								<Label text="%label.ringtarget" />
-								<ChoiceBox fx:id="cbRingTarget" prefWidth="140.0" />
+								<ChoiceBox fx:id="cbRingTarget" prefWidth="200.0" />
 							</children>
 						</VBox>
 					</TilePane>

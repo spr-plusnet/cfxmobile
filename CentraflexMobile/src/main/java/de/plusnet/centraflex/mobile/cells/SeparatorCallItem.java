@@ -1,4 +1,4 @@
-package de.plusnet.centraflex.mobile;
+package de.plusnet.centraflex.mobile.cells;
 
 /**
  * @author prelle
@@ -15,7 +15,7 @@ public class SeparatorCallItem implements CallListItem {
 
 	//-------------------------------------------------------------------
 	/**
-	 * @see de.plusnet.centraflex.mobile.CallListItem#getName()
+	 * @see de.plusnet.centraflex.mobile.cells.CallListItem#getName()
 	 */
 	@Override
 	public String getName() {

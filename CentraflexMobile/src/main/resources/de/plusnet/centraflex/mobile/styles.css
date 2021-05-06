@@ -29,14 +29,18 @@
 	-fx-base: white;
 	-fx-font-family: 'Atlas Grotesk Web Light Regular';
 }
+.app-layout {
+	-fx-background-color: bordeaux;
+}
 .backdrop-back-header {
-  -fx-background-color: bordeaux;
+  -fx-background-color: transparent;
+  -fx-border-width: 0;
 }
 .backdrop-back .label {
 	-fx-text-fill: lime;
 }
 .backdrop-back-content {
-  -fx-background-color: derive(-fx-base, -10%);
+  -fx-background-color: transparent;
 	-fx-background-radius: 0;
 }
 .page-head {
@@ -99,4 +103,10 @@
 
 .front-option {
 	-fx-padding: 0.3em;
+}
+.back-option  {
+	-fx-text-fill: white;
+}
+.back-option .text-field {
+	-fx-text-fill: black;
 }

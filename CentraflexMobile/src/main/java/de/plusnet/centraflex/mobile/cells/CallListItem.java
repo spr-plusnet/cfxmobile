@@ -1,4 +1,4 @@
-package de.plusnet.centraflex.mobile;
+package de.plusnet.centraflex.mobile.cells;
 
 /**
  * @author prelle

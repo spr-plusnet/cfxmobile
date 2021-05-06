@@ -12,13 +12,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.prelle.javafx.Page;
 import org.prelle.javafx.Card;
 import org.prelle.javafx.JavaFXConstants;
+import org.prelle.javafx.Page;
 import org.prelle.javafx.Persona;
 import org.prelle.javafx.SymbolIcon;
 
@@ -28,7 +26,9 @@ import de.centraflex.callcontrol.CallControlService;
 import de.centraflex.callcontrol.events.CallControlEvent;
 import de.centraflex.callcontrol.events.CallControlServiceListener;
 import de.centraflex.profile.ProfileService.Registration;
+import de.centraflex.telephony.CallCenterIdentity;
 import de.centraflex.telephony.CallHistoryEntry;
+import de.centraflex.telephony.DNISService;
 import de.centraflex.telephony.Service;
 import de.centraflex.telephony.Setting;
 import de.centraflex.telephony.TelephonyService;
@@ -36,8 +36,12 @@ import de.centraflex.telephony.TelephonyService.ServiceComponent;
 import de.centraflex.telephony.TelephonyService.State;
 import de.centraflex.telephony.TelephonyServiceEventBus;
 import de.centraflex.telephony.TelephonyServiceListener;
+import de.plusnet.centraflex.mobile.cells.CallHistoryItem;
+import de.plusnet.centraflex.mobile.cells.CallListItem;
+import de.plusnet.centraflex.mobile.cells.SeparatorCallItem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -45,6 +49,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -55,7 +60,7 @@ import javafx.scene.layout.VBox;
  *
  */
 public class CallPageController implements TelephonyServiceListener, CallControlServiceListener {
-	
+
 	private final static Logger logger = LogManager.getLogger(CallPageController.class);
 	private final static ResourceBundle RES = ResourceBundle.getBundle(CallPageController.class.getPackageName()+".CallPage");
 
@@ -83,14 +88,18 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			return userAgent;
 		}
 	}
-	
+
 	private transient Page page;
-	
+
+	@FXML
+	private Label test;
+	@FXML
+	private GridPane backOptions;
 	@FXML
 	private CheckBox roEnabled;
 	@FXML
 	private TextField roTarget;
-	
+
 	@FXML
 	private CheckBox cfaEnabled;
 	@FXML
@@ -107,7 +116,7 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	private CheckBox cfnrEnabled;
 	@FXML
 	private TextField cfnrTarget;
-	
+
 	@FXML
 	private TextField tfDialTarget;
 	@FXML
@@ -125,12 +134,13 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	@FXML
 	private CheckBox cbDND;
 	@FXML
-	private ChoiceBox<String> cbCLID;
+	private ChoiceBox<CallCenterIdentity> cbCLID;
 	@FXML
 	private ChoiceBox<RingTarget> cbRingTarget;
-	
+
 	private transient TelephonyService telephony;
 	private transient boolean initializing;
+	private transient CallCenterIdentity noCallCenter;
 
 	//-------------------------------------------------------------------
 	public CallPageController() {
@@ -139,24 +149,28 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	//-------------------------------------------------------------------
 	@FXML
 	public void initialize() {
+		assert test != null : "fx:id=\"test\" was not injected: check your FXML file";
+		assert backOptions != null : "fx:id=\"backOptions\" was not injected: check your FXML file";
 		assert roEnabled != null : "fx:id=\"roEnabled\" was not injected: check your FXML file";
 		assert roTarget  != null : "fx:id=\"roTarget\"  was not injected: check your FXML file";
+		assert tfDialTarget != null : "fx:id=\"tfDialTarget\" was not injected: check your FXML file";
+		assert btnDial   != null : "fx:id=\"btnDial\"  was not injected: check your FXML file";
 		initInteractivity();
-		
+
 		bxFront.setMaxHeight(Double.MAX_VALUE);
-		
+
 		list.setMaxHeight(Double.MAX_VALUE);
 		list.setMinHeight(200);
 		VBox.setVgrow(list, Priority.ALWAYS);
-		
+
 		cfHeading.setStyle("-fx-text-fill: rot; -fx-font-weight: bold"); 
 		bxCurrentCalls.setStyle("-fx-padding: 0 2em 0 2em;"); 
 		VBox.setVgrow(bxCurrentCalls, Priority.SOMETIMES);
 		list.setCellFactory( lv -> new CallListItemCell());
 		list.prefWidthProperty().bind(((Region)list.getParent()).widthProperty());
-		
+
 		cfnrTarget.setPrefColumnCount(10);
-		
+
 		cfaEnabled.setUserData(Setting.CFA_ENABLED);
 		cfbEnabled.setUserData(Setting.CFB_ENABLED);
 		cfnaEnabled.setUserData(Setting.CFNA_ENABLED);
@@ -165,19 +179,23 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		cfbTarget.setUserData(Setting.CFB_TARGET);
 		cfnaTarget.setUserData(Setting.CFNA_TARGET);
 		cfnrTarget.setUserData(Setting.CFNR_TARGET);
-		
+
 		cbDND.setDisable(true);
-		cbCLID.setDisable(true);
-		
+//		cbCLID.setDisable(true);
+
+
+		backOptions.getChildrenUnmodifiable().forEach(child -> child.getStyleClass().add("back-option"));
 	}
 
 	//-------------------------------------------------------------------
 	private void initInteractivity() {
 		tfDialTarget.setOnAction(ev -> dial());
 		btnDial.setOnAction(ev -> dial());
-		
+
 		roTarget.disableProperty().bind(roEnabled.selectedProperty().not());
 		roTarget.textProperty().addListener( (ov,o,n) -> {
+			if (initializing)
+				return;
 			logger.info("Remote office target changed to '"+n+"'");
 			Map<Setting, Object> values = new HashMap<>();
 			values.put(Setting.REMOTE_OFFICE_ENABLED, roEnabled.isSelected());
@@ -186,6 +204,8 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			refreshSettings();
 		});
 		roEnabled.selectedProperty().addListener( (ov,o,n) -> {
+			if (initializing)
+				return;
 			logger.info("Remote office active changed to '"+n+"'");
 			Map<Setting, Object> values = new HashMap<>();
 			values.put(Setting.REMOTE_OFFICE_ENABLED, n);
@@ -194,38 +214,50 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			telephony.getSettingService().configure(Service.REMOTE_OFFICE, values);
 			refreshSettings();
 		});
-		
+
 		//----- CFA -------------------------
 		cfaTarget.disableProperty().bind(cfaEnabled.selectedProperty().not());
 		cfaTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_ALWAYS, cfaEnabled, cfaTarget));
 		cfaEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_ALWAYS, cfaEnabled, cfaTarget));
-		
+
 		//----- CFB -------------------------
 		cfbTarget.disableProperty().bind(cfbEnabled.selectedProperty().not());
 		cfbTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_BUSY, cfbEnabled, cfbTarget));
 		cfbEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_BUSY, cfbEnabled, cfbTarget));
-		
+
 		//----- CFNA -------------------------
 		cfnaTarget.disableProperty().bind(cfnaEnabled.selectedProperty().not());
 		cfnaTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NO_ANSWER, cfnaEnabled, cfnaTarget));
 		cfnaEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NO_ANSWER, cfnaEnabled, cfnaTarget));
-		
+
 		//----- CFNR -------------------------
 		cfnrTarget.disableProperty().bind(cfnrEnabled.selectedProperty().not());
 		cfnrTarget.textProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NOT_REACHABLE, cfnrEnabled, cfnrTarget));
 		cfnrEnabled.selectedProperty().addListener( (ov,o,n) -> changeCallForwarding(Service.CALL_FORWARDING_NOT_REACHABLE, cfnrEnabled, cfnrTarget));
-		
+
 		bxCurrentCalls.heightProperty().addListener( (ov,o,n) -> {
 			logger.info("Active Calls Height: "+n);
 		});
-		list.heightProperty().addListener( (ov,o,n) -> {
-			logger.info("Call List Height: "+n);
+//		list.heightProperty().addListener( (ov,o,n) -> {
+//			logger.info("Call List Height: "+n);
+//		});
+
+		// DNIS
+		cbCLID.getSelectionModel().selectedItemProperty().addListener( (ov,o,n) -> {
+			CallCenterIdentity whoAmI = (CallCenterIdentity) n;
+			if (n==null || whoAmI==noCallCenter)
+				telephony.getDNISService().unsetIdentity();
+			else
+				telephony.getDNISService().setIdentity(whoAmI);
+
 		});
 	}
 
 	//-------------------------------------------------------------------
 	private void changeCallForwarding(Service serv, CheckBox cbAct, TextField tfTarget) {
 		logger.info(serv+" active changed");
+		if (initializing)
+			return;
 		Map<Setting, Object> values = new HashMap<>();
 		values.put((Setting)cbAct.getUserData(), cbAct.isSelected());
 		if (tfTarget.getText()!=null && !tfTarget.getText().isBlank())
@@ -242,10 +274,10 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		this.telephony = telephony;
 		TelephonyServiceEventBus.addListener(this);
 		initializing = true;
-		
+
 		logger.warn("Set TelephonyService to "+telephony);
 		((Region)page.getContent()).setMaxWidth(Double.MAX_VALUE);
-		
+
 		page.setOnEnterAction(ev -> {
 			refreshCallHistory();
 			refreshSettings();
@@ -255,7 +287,11 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		page.setOnLeaveAction(ev -> {
 			telephony.getCallControlService().removeListener(this);
 		});
-		
+		page.setOnSwipeDown(ev -> {
+			logger.info("Refresh call history");
+			refreshCallHistory();
+		});
+
 	}
 
 	//-------------------------------------------------------------------
@@ -283,62 +319,82 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	private void refreshSettings() {
 		if (initializing)
 			return;
-		
+
 		Platform.runLater( () -> {
 			initializing = true;
-			StringBuffer header = new StringBuffer();
-			
-			Map<Setting, Object> ro = telephony.getSettingService().getConfiguration(Service.REMOTE_OFFICE);
-			if (!ro.isEmpty()) {
-				roEnabled.setSelected( (Boolean)ro.get(Setting.REMOTE_OFFICE_ENABLED));
-				roTarget.setText( (String)ro.get(Setting.REMOTE_OFFICE_TARGET));
-				System.err.println("Set "+roTarget.getText());
-				roEnabled.setDisable(false);
-				if (roEnabled.isSelected()) {
-					header.append("Remote Office: "+roTarget.getText());
+			logger.debug("START: refreshSettings");
+			try {
+				StringBuffer header = new StringBuffer();
+
+				Map<Setting, Object> ro = telephony.getSettingService().getConfiguration(Service.REMOTE_OFFICE);
+				if (!ro.isEmpty()) {
+					roEnabled.setSelected( (Boolean)ro.get(Setting.REMOTE_OFFICE_ENABLED));
+					roTarget.setText( (String)ro.get(Setting.REMOTE_OFFICE_TARGET));
+					roEnabled.setDisable(false);
+					if (roEnabled.isSelected()) {
+						header.append("Remote Office: "+roTarget.getText());
+					} else {
+						header.append("Kein Remote Office");
+					}
 				} else {
-					header.append("Kein Remote Office");
+					roEnabled.setSelected( false);
+					roTarget.setText( "?");
+					roEnabled.setDisable(true);
+					page.setSecondaryHeader(new Label("From Controller"));
 				}
-			} else {
-				roEnabled.setSelected( false);
-				roTarget.setText( "?");
-				roEnabled.setDisable(true);
-				page.setSecondaryHeader(new Label("From Controller"));
-			}
-			
-			/*
-			 * Call Forwarding Always
-			 */
-			updateService(Service.CALL_FORWARDING_ALWAYS, Setting.CFA_ENABLED, Setting.CFA_TARGET, cfaEnabled, cfaTarget, header);
-			updateService(Service.CALL_FORWARDING_BUSY, Setting.CFB_ENABLED, Setting.CFB_TARGET, cfbEnabled, cfbTarget, header);
-			updateService(Service.CALL_FORWARDING_NO_ANSWER, Setting.CFNA_ENABLED, Setting.CFNA_TARGET, cfnaEnabled, cfnaTarget, header);
-			updateService(Service.CALL_FORWARDING_NOT_REACHABLE, Setting.CFNR_ENABLED, Setting.CFNR_TARGET, cfnrEnabled, cfnrTarget, header);
 
-			page.setSecondaryHeader(new Label(header.toString()));
+				/*
+				 * Call Forwarding Always
+				 */
+				updateService(Service.CALL_FORWARDING_ALWAYS, Setting.CFA_ENABLED, Setting.CFA_TARGET, cfaEnabled, cfaTarget, header);
+				updateService(Service.CALL_FORWARDING_BUSY, Setting.CFB_ENABLED, Setting.CFB_TARGET, cfbEnabled, cfbTarget, header);
+				updateService(Service.CALL_FORWARDING_NO_ANSWER, Setting.CFNA_ENABLED, Setting.CFNA_TARGET, cfnaEnabled, cfnaTarget, header);
+				updateService(Service.CALL_FORWARDING_NOT_REACHABLE, Setting.CFNR_ENABLED, Setting.CFNR_TARGET, cfnrEnabled, cfnrTarget, header);
 
-			telephony.getProfileService().getDevices();
-			List<RingTarget> listRT = new ArrayList<RingTarget>();
-			listRT.add(new RingTarget(RingTargetLocation.All));
-			for (Registration regis : telephony.getProfileService().getRegistrations()) {
-				switch (regis.type) {
-				case PRIMARY:
-					listRT.add(new RingTarget(RingTargetLocation.Primary, regis.lineport, regis.userAgent));
-					break;
-				case SCA:
-					listRT.add(new RingTarget(RingTargetLocation.SharedCallAppearance, regis.lineport, regis.userAgent));
-					break;
-				default:
-					break;
+				page.setSecondaryHeader(new Label(header.toString()));
+
+				// Ring targets
+				telephony.getProfileService().getDevices();
+				List<RingTarget> listRT = new ArrayList<RingTarget>();
+				listRT.add(new RingTarget(RingTargetLocation.All));
+				for (Registration regis : telephony.getProfileService().getRegistrations()) {
+					switch (regis.type) {
+					case PRIMARY:
+						listRT.add(new RingTarget(RingTargetLocation.Primary, regis.lineport, regis.userAgent));
+						break;
+					case SCA:
+						listRT.add(new RingTarget(RingTargetLocation.SharedCallAppearance, regis.lineport, regis.userAgent));
+						break;
+					default:
+						break;
+
+					}
+				}
+				cbRingTarget.getItems().setAll(listRT);
+				cbRingTarget.getSelectionModel().select(0);
 				
+				// DNIS names
+				DNISService dnis = telephony.getDNISService();
+				System.err.println("DNISService = "+dnis);
+				if (dnis!=null) {
+					List<CallCenterIdentity> identities = dnis.getCallCenterIdentities();
+					noCallCenter = identities.get(0);
+					cbCLID.getItems().setAll(identities);
+				} else {
+					cbCLID.setDisable(true);
+					cbCLID.getItems().clear();
 				}
+				if (cbCLID.getItems().size()<2) {
+					cbCLID.setDisable(true);
+				}
+			} finally {
+				initializing = false;
+				logger.debug("STOP : refreshSettings");
 			}
-			cbRingTarget.getItems().setAll(listRT);
-			cbRingTarget.getSelectionModel().select(0);
-			initializing = false;
 		});
-		
+
 	}
-	
+
 	//-------------------------------------------------------------------
 	private void updateService(Service service, Setting ENABLED, Setting TARGET, CheckBox cbEnable, TextField tfTarget, StringBuffer header) {
 		Map<Setting, Object> cfb = telephony.getSettingService().getConfiguration(service);
@@ -354,35 +410,35 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			tfTarget.setText( "?");
 			cbEnable.setDisable(true);
 		}
-		
+
 	}
-	
+
 	//-------------------------------------------------------------------
 	private static String getDateText(Instant now, Instant value) {
 		int today = now.atZone(ZoneId.systemDefault()).getDayOfYear();
 		int dow   = value.atZone(ZoneId.systemDefault()).getDayOfYear();
-//		int days = (int) ChronoUnit.DAYS.between(now, value);
+		//		int days = (int) ChronoUnit.DAYS.between(now, value);
 		int days = dow -today;
-//		int days = -calcWeekDays1(LocalDate.ofInstant(value, ZoneOffset.UTC), LocalDate.ofInstant(now, ZoneOffset.UTC));
+		//		int days = -calcWeekDays1(LocalDate.ofInstant(value, ZoneOffset.UTC), LocalDate.ofInstant(now, ZoneOffset.UTC));
 		if (days==0)
 			return "Heute";
 		if (days==-1)
 			return "Gestern";
 		else if (days==-2)
 			return "Vorgestern";
-		
+
 		// If today is monday or tuesday, all
 		int todayWeek = now.atZone(ZoneId.systemDefault()).get(WeekFields.ISO.weekOfYear());
 		int week = value.atZone(ZoneId.systemDefault()).get(WeekFields.ISO.weekOfYear());
 		if (todayWeek==week)
 			return "Diese Woche";
 		int weekDiff = todayWeek - week;
-		
+
 		if (weekDiff==1)
 			return "Letzte Woche";
 		if (weekDiff==2)
 			return "Vorletzte Woche";
-		
+
 		return "KW "+week;
 	}
 
@@ -391,7 +447,7 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		bxCurrentCalls.getChildren().clear();
 		for (Call call : telephony.getCallControlService().getActiveCalls()) {
 			logger.info("Call with state "+call.getState()+" in personality "+call.getPersonality()+" remote "+call.getRemoteParty());
-			
+
 			Card persona = new Card(call.getRemoteParty().getName());
 			// Strip "tel:"
 			if (call.getRemoteParty().getAddress().startsWith("tel:")) {
@@ -420,7 +476,7 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 			}
 			persona.getButtons().add(btnHangup);
 			bxCurrentCalls.getChildren().add(persona);
-			
+
 			btnHangup.setOnAction(ev -> {
 				logger.info("Release call");
 				telephony.getCallControlService().releaseCall(call);
@@ -437,42 +493,46 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	}
 
 	//-------------------------------------------------------------------
-	private void refreshCallHistory() {		
+	private void refreshCallHistory() {	
+		if (page!=null && page.getScene()!=null)
+			page.getScene().setCursor(Cursor.WAIT);
 		/* 
 		 * Build a list of call list items.
 		 * Start with the call history 
 		 */
 		List<CallListItem> items = new ArrayList<CallListItem>();
-		
+
 		Instant now = Instant.now();
 		String lastText = "";
 		for (CallHistoryEntry tmp : telephony.getCallLogs()) {
-//			int days = (int) ChronoUnit.DAYS.between(now, tmp.getTime());
+			//			int days = (int) ChronoUnit.DAYS.between(now, tmp.getTime());
 			String text = getDateText(now, tmp.getTime());;
-//			if (days==-1)
-//				text = "Gestern";
-//			else if (days==-2)
-//				text = "Vorgestern";
-//			else {
-//				text = getDateText(now, tmp.getTime());
-//			}
+			//			if (days==-1)
+			//				text = "Gestern";
+			//			else if (days==-2)
+			//				text = "Vorgestern";
+			//			else {
+			//				text = getDateText(now, tmp.getTime());
+			//			}
 			if (!lastText.equals(text)) {
 				items.add(new SeparatorCallItem(text));
 				lastText = text;
 			}
 			items.add(new CallHistoryItem(tmp));
 		}
-		
-		
+
+
 		list.getItems().clear();		
 		list.getItems().addAll(items);
+		if (page!=null && page.getScene()!=null)
+			page.getScene().setCursor(Cursor.DEFAULT);
 	}
-	
+
 	//-------------------------------------------------------------------
 	private void dial() {
 		String target = tfDialTarget.getText();
 		logger.info("Dial '"+target+"' with ring target "+cbRingTarget.getValue());
-		
+
 		CallControlService callCtrl = telephony.getCallControlService();
 		Map<String,String> params = new HashMap<String, String>();
 		if (cbRingTarget.getValue()!=null) {
@@ -507,14 +567,14 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 }
 
 class CallListItemCell extends ListCell<CallListItem> {
-	
+
 	private static DateTimeFormatter formatter =
-		    DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
-            .withLocale( Locale.GERMANY )
-            .withZone( ZoneId.systemDefault() );
-	
+			DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+			.withLocale( Locale.GERMANY )
+			.withZone( ZoneId.systemDefault() );
+
 	private HistoryCallPane personaPane = new HistoryCallPane();
-	
+
 	public void updateItem(CallListItem item, boolean empty) {
 		super.updateItem(item, empty);
 		if (empty) {
@@ -549,7 +609,7 @@ class CallListItemCell extends ListCell<CallListItem> {
 			} else {
 				Persona persona = personaPane.getPersona();
 				persona.setText(item.getName());
-				
+
 				setGraphic(persona);
 			}
 		}
@@ -557,10 +617,10 @@ class CallListItemCell extends ListCell<CallListItem> {
 }
 
 class HistoryCallPane extends HBox {
-	
+
 	private SymbolIcon icon;
 	private Persona persona;
-	
+
 	public HistoryCallPane() {
 		super(10);
 		persona = new Persona();

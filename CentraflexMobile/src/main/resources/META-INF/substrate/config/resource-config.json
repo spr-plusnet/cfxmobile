@@ -1,0 +1,20 @@
+{
+  "resources":{
+  "includes":[
+    {"pattern":"\\QMETA-INF/services/de.centraflex.telephony.TelephonyService\\E"}, 
+    {"pattern":"\\QMETA-INF/services/org.apache.logging.log4j.core.util.ContextDataProvider\\E"}, 
+    {"pattern":"\\QMETA-INF/services/org.apache.logging.log4j.spi.Provider\\E"}, 
+    {"pattern":"\\QMETA-INF/services/org.apache.logging.log4j.util.PropertySource\\E"}, 
+    {"pattern":"\\Qde/plusnet/centraflex/mobile/Logo2_150.png\\E"}, 
+    {"pattern":"\\Qde/plusnet/centraflex/mobile/fonts/Atlas_Grotesk_Web_Light_Regular.ttf\\E"}, 
+    {"pattern":"\\Qde/plusnet/centraflex/mobile/fonts/Stratos_Web.ttf\\E"}, 
+    {"pattern":"\\Qde/plusnet/centraflex/mobile/fxml/CallPage.fxml\\E"}, 
+    {"pattern":"\\Qde/plusnet/centraflex/mobile/styles.css\\E"}, 
+    {"pattern":"\\Qlog4j2.xml\\E"}
+  ]},
+  "bundles":[
+    {"name":"de.plusnet.centraflex.mobile.CFXMobileMain"}, 
+    {"name":"de.plusnet.centraflex.mobile.CallPage"}, 
+    {"name":"de.plusnet.centraflex.mobile.LoginDialog"}
+  ]
+}

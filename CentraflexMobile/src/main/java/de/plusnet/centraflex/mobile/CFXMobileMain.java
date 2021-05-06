@@ -5,40 +5,48 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.prelle.javafx.AppLayout.NavigationStyle;
+import javax.imageio.ImageIO;
+
 import org.prelle.javafx.CloseType;
 import org.prelle.javafx.FlexibleApplication;
 import org.prelle.javafx.NavigationItem;
 import org.prelle.javafx.NavigationPane;
 import org.prelle.javafx.Page;
 import org.prelle.javafx.SymbolIcon;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import  com.gluonhq.attach.settings.SettingsService;
 
 import de.centraflex.callcontrol.events.CallControlEvent;
 import de.centraflex.callcontrol.events.CallControlServiceListener;
 import de.centraflex.telephony.TelephonyService;
 import de.centraflex.telephony.TelephonyServiceFactory;
 import de.centraflex.telephony.config.xsi.XSIConfigParameters;
+import de.centraflex.telephony.xsi.TelephonyServiceXSI;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class CFXMobileMain extends FlexibleApplication implements CallControlServiceListener {
 	
+	private final static String CFGKEY_USER = "cfxclient.user";
+	private final static String CFGKEY_PASS = "cfxclient.pass";
+	
 	private final static Logger logger = LogManager.getLogger(CFXMobileMain.class.getName());
-	private final static String PREF_USER = "eden.user";
-	private final static String PREF_PASS = "eden.pass";
 	
 	private ResourceBundle RES = ResourceBundle.getBundle(CFXMobileMain.class.getName(), CFXMobileMain.class.getModule());
-	private Preferences pref;
 	private TelephonyService telephony;
+	private Optional<SettingsService> settings;
 	
 	private NavigationItem navCalls;
+	private NavigationItem navContacts;
 	
 	private Map<NavigationItem,Page> pageMap;
 
@@ -51,27 +59,23 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 
 	//-------------------------------------------------------------------
 	public CFXMobileMain() throws IOException {
-		pref = Preferences.userNodeForPackage(CFXMobileMain.class);
+		settings = SettingsService.create();
 		initComponents();
 	}
 
 	//-------------------------------------------------------------------
 	private void initComponents() {
-		telephony = TelephonyServiceFactory.getInstance();
+//		telephony = TelephonyServiceFactory.getInstance();
+		telephony = new TelephonyServiceXSI();
+		TelephonyServiceFactory.setInstance(telephony);
 		
-//		navContacts = new NavigationItem("Personen" , new SymbolIcon("Contact"));
+		navContacts = new NavigationItem("Personen" , new SymbolIcon("Contact"));
 //		navActivity = new NavigationItem("Aktivität", new SymbolIcon("browsephotos"));
 		navCalls    = new NavigationItem("Anrufe"   , new SymbolIcon("Phone"));
 //		navSettings = new NavigationItem("Einstellung", new SymbolIcon("setting"));
 //		addPage(navContacts, new ContactsPage(telephony));
 		
 		pageMap = new HashMap<>();
-		try {
-			pageMap.put(navCalls, ScreenLoader.loadCallPage(telephony));
-		} catch (Exception e) {
-			logger.fatal("Could not set up UI",e);
-			stop();
-		}
 	}
 
 	//-------------------------------------------------------------------
@@ -80,8 +84,12 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 	 */
 	@Override
 	public void populateNavigationPane(NavigationPane drawer) {
-		// TODO Auto-generated method stub
+		ImageView headerImage = new ImageView(new Image(CFXMobileMain.class.getResourceAsStream("Logo2_150.png")));
+		headerImage.setFitWidth(150);
+		headerImage.setPreserveRatio(true);
+		drawer.setFooter(headerImage);
 		drawer.getItems().add(navCalls);
+		drawer.getItems().add(navContacts);
 	}
 
     //-------------------------------------------------------------------
@@ -90,35 +98,34 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
      */
     @Override
     public void start(Stage stage) throws Exception {
-       	super.start(stage);
-		Font foo =Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Atlas_Grotesk_Web_Light_Regular.ttf"), 12.0);
-		System.err.println("Loaded font "+foo);
-		Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Stratos_Web.ttf"), 12.0);
+       	try {
+			super.start(stage);
+			Font foo =Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Atlas_Grotesk_Web_Light_Regular.ttf"), 12.0);
+			System.err.println("Loaded font 1 "+foo);
+	        ImageIO.getImageReadersByMIMEType("image/jpeg");
+			foo = Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Stratos_Web.ttf"), 12.0);
+			System.err.println("Loaded font 2 "+foo);
 //       	this.getAppLayout().setNavigationStyle(NavigationStyle.MOBILE);
-       	stage.setWidth(360);
-       	stage.setHeight(574);
-//       	String javaVersion = System.getProperty("java.version");
-//        String javafxVersion = System.getProperty("javafx.version");
-//        Label label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-//
-//        ImageView imageView = new ImageView(new Image(CFXMobileMain.class.getResourceAsStream("openduke.png")));
-//        imageView.setFitHeight(200);
-//        imageView.setPreserveRatio(true);
-//
-//        VBox root = new VBox(30, imageView, label);
-//        root.setAlignment(Pos.CENTER);
-//
-//        Scene scene = new Scene(root, 640, 480);
-//        scene.getStylesheets().add(CFXMobileMain.class.getResource("styles.css").toExternalForm());
-//        stage.setScene(scene);
-//        stage.show();
-       	setStyle(stage.getScene(),FlexibleApplication.LIGHT_STYLE);
-       	stage.getScene().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-//  		getAppLayout().getNavigationPane().getItems().addAll(navCalls);
-		getAppLayout().getNavigationPane().getSelectionModel().select(navCalls);
-       
-        prepareXSILogin();
-        login();
+			stage.setWidth(460);
+			stage.setHeight(574);
+			setStyle(stage.getScene(),FlexibleApplication.LIGHT_STYLE);
+			stage.getScene().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+
+			System.err.println("2");
+			getAppLayout().getNavigationPane().getSelectionModel().select(navCalls);
+			System.err.println("2b");
+			getAppLayout().getNavigationPane().setSettingsVisible(false);
+			System.err.println("3");
+     
+			prepareXSILogin();
+			System.err.println("4");
+			login();
+			System.err.println("5");
+		} catch (Throwable e) {
+			System.err.println(e.toString());
+			logger.error("Error starting application",e);
+			System.exit(1);
+		}
     }
 
 	//-------------------------------------------------------------------
@@ -137,17 +144,27 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 		Authenticator.setDefault(new Authenticator(){
 			protected PasswordAuthentication getPasswordAuthentication() {
 				logger.warn("getPasswordAuthentication after "+noLoginAttempts+" login attempts  "+getRequestingHost());
+				String user = null;
+				String pass = null;
+				logger.debug("Settings module present = "+settings.isPresent());
+				if (settings.isPresent()) {
+					user = settings.get().retrieve(CFGKEY_USER);
+					pass = settings.get().retrieve(CFGKEY_PASS);
+				}
+
 				LoginDialog dialog = new LoginDialog(noLoginAttempts);
-				dialog.setLogin(pref.get(PREF_USER, null));
-				dialog.setPassword(pref.get(PREF_PASS, null));
+				dialog.setLogin(user);
+				dialog.setPassword(pass);
 				 Object foo = CFXMobileMain.this.showAndWait(dialog);
 				 logger.warn("Returned "+foo);
 				 if (foo!=CloseType.OK) {
 					stop();
 					 return null;
 				 }
-				pref.put(PREF_USER, dialog.getLogin());
-				pref.put(PREF_PASS, dialog.getPassword());
+				 if (settings.isPresent()) {
+					 settings.get().store(CFGKEY_USER, dialog.getLogin());
+					 settings.get().store(CFGKEY_PASS, dialog.getPassword());
+				 }
 				noLoginAttempts++;
 				return new PasswordAuthentication (dialog.getLogin(), dialog.getPassword().toCharArray());
 			}
@@ -156,13 +173,38 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 
 	//-------------------------------------------------------------------
 	private void login() {
-		String user = "04212025933@qsc.de";
+		String user = null;
+		String pass = null;
+		logger.debug("Settings module present = "+settings.isPresent());
+		if (settings.isPresent()) {
+			user = settings.get().retrieve(CFGKEY_USER);
+			pass = settings.get().retrieve(CFGKEY_PASS);
+		}
+//		String user = "04212025933@qsc.de";
 		String host = "web4.bmcag.com";
 		
+		while (user==null) {
+			LoginDialog dialog = new LoginDialog(noLoginAttempts);
+			dialog.setLogin(user);
+			dialog.setPassword(pass);
+			 Object foo = CFXMobileMain.this.showAndWait(dialog);
+			 logger.warn("Returned "+foo);
+			 if (foo!=CloseType.OK) {
+				stop();
+			 }
+			 user = dialog.getLogin();
+			 pass = dialog.getPassword();
+			 if (settings.isPresent()) {
+				 settings.get().store(CFGKEY_USER, dialog.getLogin());
+				 settings.get().store(CFGKEY_PASS, dialog.getPassword());
+			 }
+		}
 		
 		Properties ccConfig = new Properties();
 		ccConfig.setProperty(XSIConfigParameters.XSI_USER, user);
+		ccConfig.setProperty(XSIConfigParameters.XSI_PASSWORD, pass);
 		ccConfig.setProperty(XSIConfigParameters.XSI_HOST, host);
+		ccConfig.setProperty(XSIConfigParameters.XSI_APPNAME, "CFXMobile");
 		telephony.configure(ccConfig);
 		telephony.getCallControlService().addListener(this);
 //		centraflex = CentraflexService.createSession(host, Constants.APPNAME);
@@ -183,6 +225,27 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 		Page page = pageMap.get(menuItem);
 		if (page!=null)
 			return page;
+		if (menuItem==navCalls) {
+			try {
+				page = ScreenLoader.loadCallPage(telephony);
+				pageMap.put(navCalls, page);
+			} catch (Exception e) {
+				logger.error("Could not set up UI",e);
+				stop();
+			}
+			return page;
+		}
+		if (menuItem==navContacts) {
+			try {
+				page = ScreenLoader.loadContactsPage(telephony);
+				pageMap.put(navContacts, page);
+			} catch (Exception e) {
+				logger.error("Could not set up UI",e);
+				stop();
+			}
+			return page;
+		}
+		
 		logger.warn("No page for "+menuItem.getText());
 		return null;
 	}

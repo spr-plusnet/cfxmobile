@@ -39,34 +39,23 @@ public class ScreenLoader {
 		FXMLLoader.setDefaultClassLoader(FlexibleApplication.class.getClassLoader());
 		loader.setBuilderFactory(new ExtendedComponentBuilderFactory());
 		Page ret = loader.load();
+		ret.setId("calls");
 		((CallPageController)loader.getController()).setComponent(ret, telephony);
 		return ret;
 	}
 
-//	//-------------------------------------------------------------------
-//	public static Page loadSpellsPage() throws IOException {
-//		FXMLLoader loader = new FXMLLoader(
-//				CommLinkMain.class.getResource("fxml/SpellsPage.fxml"),
-//				ResourceBundle.getBundle("de.rpgframework.shadowrun6.commlink.SpellsPage")
-//				);
-//		FXMLLoader.setDefaultClassLoader(FlexibleApplication.class.getClassLoader());
-//		loader.setBuilderFactory(new ExtendedComponentBuilderFactory());
-//		Page ret = loader.load();
-//		((SpellsPageController)loader.getController()).setComponent(ret);
-//		return ret;
-//	}
-
-//	//-------------------------------------------------------------------
-//	public static Page loadBeastiaryPage() throws IOException {
-//		FXMLLoader loader = new FXMLLoader(
-//				CommLinkMain.class.getResource("fxml/BeastiaryPage.fxml"),
-//				ResourceBundle.getBundle("de.rpgframework.splittermond.mondtor.BeastiaryPage")
-//				);
-//		FXMLLoader.setDefaultClassLoader(FlexibleApplication.class.getClassLoader());
-//		loader.setBuilderFactory(new ExtendedComponentBuilderFactory());
-//		Page ret = loader.load();
-//		((BeastiaryPageController)loader.getController()).setComponent(ret);
-//		return ret;
-//	}
+	//-------------------------------------------------------------------
+	public static Page loadContactsPage(TelephonyService telephony) throws IOException {
+		FXMLLoader loader = new FXMLLoader(
+				CFXMobileMain.class.getResource("fxml/ContactsPage.fxml"),
+				ResourceBundle.getBundle("de.plusnet.centraflex.mobile.ContactsPage")
+				);
+		FXMLLoader.setDefaultClassLoader(FlexibleApplication.class.getClassLoader());
+		loader.setBuilderFactory(new ExtendedComponentBuilderFactory());
+		Page ret = loader.load();
+		ret.setId("contacts");
+		((ContactsPageController)loader.getController()).setComponent(ret, telephony);
+		return ret;
+	}
 
 }
