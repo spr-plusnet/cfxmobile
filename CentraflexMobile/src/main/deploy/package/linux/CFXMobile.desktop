@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Centraflex Mobile
+GenericName=Call Control Application
+Comment=Remote Control your Centraflex telephony
+Comment[de]=Steuern Sie ihre Centraflex Telefonanlage
+Exec=startGenesis.jar
+TryExec=startGenesis.jar
+Icon=xsane
+Terminal=true
+Type=Application
+Keywords=Telephony;Centraflex
+Keywords[de]=Telefonie;Centraflex
+Categories=Game;
+StartupNotify=true
+

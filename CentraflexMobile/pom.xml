@@ -18,7 +18,7 @@
 		<client.plugin.version>0.1.39</client.plugin.version>
 		<attach.version>4.0.11</attach.version>
 		<mainClassName>de.plusnet.centraflex.mobile.CFXMobileMain</mainClassName>
-		<log4j.version>2.14.0</log4j.version>
+		<log4j.version>2.14.1</log4j.version>
 	</properties>
 
 	<developers>
@@ -120,20 +120,15 @@
 			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
-			<version>2.4.0-b180830.0438</version>
-			<scope>runtime</scope>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>3.0.0</version>
 		</dependency>
-		<dependency>
-      <groupId>com.sun.activation</groupId>
-      <artifactId>jakarta.activation</artifactId>
-      <version>1.2.2</version>
-    </dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${log4j.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
@@ -177,10 +172,9 @@
 						<list>de.plusnet.centraflex.mobile.CFXMobileMain</list>
 						<list>org.prelle.javafx.JavaFXConstants</list>
 						<list>de.plusnet.centraflex.mobile.CallPage</list>
-						<list>javax.xml.bind.Messages</list>
 					</bundlesList>
-					<!--enableSWRendering>true</enableSWRendering-->
-					<!--javafxStaticSdkVersion>16-ea+gvm31</javafxStaticSdkVersion-->
+					<!--enableSWRendering>true</enableSWRendering -->
+					<!--javafxStaticSdkVersion>16-ea+gvm31</javafxStaticSdkVersion -->
 					<mainClass>${mainClassName}</mainClass>
 					<nativeImageArgs>
 						<arg>-Duser.language=de</arg>
@@ -234,7 +228,7 @@
 		<profile>
 			<id>desktop</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<client.target>host</client.target>

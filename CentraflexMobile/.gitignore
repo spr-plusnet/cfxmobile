@@ -3,3 +3,5 @@
 *.log
 *logdir*
 /META-INF/
+/build/
+/.gradle/

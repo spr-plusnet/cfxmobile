@@ -1,0 +1,26 @@
+Name:       Centraflex Mobile
+Version:    ${projectVersion}
+Release:    1
+Group  :    Centraflex
+Vendor :    Plusnet GmbH
+URL    :    https://www.centraflex.de/
+Summary:    Call Control Application
+License:    FIXME
+
+%description
+This is my first RPM package, which does nothing.
+
+%prep
+# we have no source, so nothing here
+
+%build
+
+%install
+mkdir -p %{buildroot}/usr/bin/
+install -m 755 hello-world.sh %{buildroot}/usr/bin/hello-world.sh
+
+%files
+/usr/bin/hello-world.sh
+
+%changelog
+# let skip this for now
