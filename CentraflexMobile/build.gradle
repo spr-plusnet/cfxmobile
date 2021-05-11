@@ -2,9 +2,8 @@ plugins {
     id 'application'
     id 'eclipse'
     id 'org.openjfx.javafxplugin' version '0.0.10'
-    id 'org.beryx.jlink' version '2.21.0'
+    id 'org.beryx.jlink' version '2.23.8'
     id "de.undercouch.download" version "4.0.0"
-    id "com.savvasdalkitsis.module-dependency-graph" version "0.9"
 }
 
 // Application Configuration
@@ -13,7 +12,7 @@ ext {
     appLauncher   = "CentraflexMobile"
     appPackaging  = "Plusnet GmbH"
      appModuleName = "cfxmobile"
-    appMainClass  = "cfxmobile/de.plusnet.centraflex.mobile.CFXMobileMain"
+    appMainClass  = "de.plusnet.centraflex.mobile.CFXMobileMain"
     profile = findProperty('profile') ?: 'development'    
 }
 
@@ -26,29 +25,19 @@ repositories {
 }
 
 dependencies {
-    implementation "org.apache.logging.log4j:log4j-api:2.14.1"
+    implementation "org.apache.logging.log4j:log4j-api:2.13.3"
     implementation "org.prelle:javafx-extensions:5.0.0-SNAPSHOT"
-    implementation "com.gluonhq.attach:connectivity:4.0.11"
-    implementation "com.gluonhq.attach:dialer:4.0.11"
-    implementation "com.gluonhq.attach:display:4.0.11"
-    implementation "com.gluonhq.attach:lifecycle:4.0.11"
-    implementation "com.gluonhq.attach:local-notifications:4.0.11"
-    implementation "com.gluonhq.attach:runtime-args:4.0.11"
-    implementation "com.gluonhq.attach:settings:4.0.11"
-    implementation "com.gluonhq.attach:statusbar:4.0.11"
-    implementation "com.gluonhq.attach:storage:4.0.11"
-    implementation "com.gluonhq.attach:util:4.0.11"
     implementation "de.centraflex:telephony-api:0.0.1-SNAPSHOT"
     implementation "de.plusnet.centraflex:libxsi:2020.07"
     implementation "de.centraflex:callcontrol-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:contacts-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:telephony-xsi:0.0.1-SNAPSHOT"
-    runtimeOnly "org.apache.logging.log4j:log4j-core:2.14.0"
-    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:3.0.0"
-    runtimeOnly "com.sun.xml.bind:jaxb-impl:3.0.0"
+    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    runtimeOnly "org.glassfish.jaxb:jaxb-runtime:3.0.1"
     runtimeOnly ("com.sun.mail:javax.mail:1.6.2") {
        exclude group: "javax.activation"
     }
+      implementation "com.gluonhq.attach:settings:4.0.11:desktop"
 }
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -112,9 +101,35 @@ jlink {
         name = "${appLauncher}"
         jvmArgs = ["-Dapplication.version=$version","-Dprofile=release"]
     }
-    forceMerge('log4j-api')
+    forceMerge('log4j-api', 'jaxb', 'jakarta.xml.bind-api', 'jaxb-runtime')
+    // Herausgefunden mit ./gradlew suggestMergedModuleInfo
+    // und dann eine provides-Zeile entfernt
+		mergedModule {
+    requires 'jakarta.activation';
+    requires 'java.logging';
+    requires 'java.security.sasl';
+    requires 'java.xml';
+    requires 'com.sun.istack.runtime';
+    requires 'com.sun.xml.txw2';
+    requires 'java.desktop';
+    requires 'java.datatransfer';
+    requires 'java.compiler';
+    uses 'org.apache.logging.log4j.util.PropertySource';
+    uses 'javax.mail.Provider';
+    uses 'org.apache.logging.log4j.spi.Provider';
+    uses 'org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory';
+    provides 'org.apache.logging.log4j.util.PropertySource' with 'org.apache.logging.log4j.util.EnvironmentPropertySource',
+                                'org.apache.logging.log4j.util.SystemPropertiesPropertySource';
+    provides 'javax.mail.Provider' with 'com.sun.mail.imap.IMAPProvider',
+                                'com.sun.mail.imap.IMAPSSLProvider',
+                                'com.sun.mail.pop3.POP3Provider',
+                                'com.sun.mail.pop3.POP3SSLProvider',
+                                'com.sun.mail.smtp.SMTPProvider',
+                                'com.sun.mail.smtp.SMTPSSLProvider';
+    }
+    
     jpackage {
-				jpackageHome = '/home/prelle/Downloads/jdk-14'
+				//jpackageHome = '/usr/lib/jvm/java-16-openjdk-16.0.1.0.9-1.rolling.fc33.x86_64/'
         if(os.macOsX) {
             installerOptions = [
             	  '--mac-package-identifier', 'de.plusnet.CentraflexMobile',
