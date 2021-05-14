@@ -25,14 +25,14 @@ repositories {
     maven { 
     	credentials {
             username "spr-plusnet"
-            password System.getenv("MAVEN_PASSWORD")
+            password System.getenv("ACCESS_PASSWORD")
       }
     	url 'https://maven.pkg.github.com/spr-plusnet/libxsi'
     }
     maven {
     	credentials {
             username "spr-plusnet"
-            password System.getenv("MAVEN_PASSWORD")
+            password System.getenv("ACCESS_PASSWORD")
       }
     	url 'https://maven.pkg.github.com/spr-plusnet/client-framework' 
     }
