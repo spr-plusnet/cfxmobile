@@ -22,6 +22,20 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/groups/public/' }
     maven { url 'https://nexus.gluonhq.com/nexus/content/repositories/releases/' }
     maven { url 'https://rpgframework.jfrog.io/artifactory/RPGFramework' }
+    maven { 
+    	credentials {
+            username "spr-plusnet"
+            password "${env.ACCESS_TOKEN}"
+      }
+    	url 'https://maven.pkg.github.com/spr-plusnet/libxsi'
+    }
+    maven {
+    	credentials {
+            username "spr-plusnet"
+            password "${env.ACCESS_TOKEN}"
+      }
+    	url 'https://maven.pkg.github.com/spr-plusnet/client-framework' 
+    }
 }
 
 dependencies {
