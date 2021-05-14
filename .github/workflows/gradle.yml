@@ -24,7 +24,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Echo
-      run: echo $ACCESS_TOKEN
+      run: set ; echo $env.ACCESS_TOKEN
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
     - name: Build with Gradle
