@@ -24,14 +24,14 @@ repositories {
     maven { url 'https://rpgframework.jfrog.io/artifactory/RPGFramework' }
     maven { 
     	credentials {
-            username "spr-plusnet"
+            username "spr@plusnet.de"
             password System.getenv("ACCESS_PASSWORD")
       }
     	url 'https://maven.pkg.github.com/spr-plusnet/libxsi'
     }
     maven {
     	credentials {
-            username "spr-plusnet"
+            username "spr@plusnet.de"
             password System.getenv("ACCESS_PASSWORD")
       }
     	url 'https://maven.pkg.github.com/spr-plusnet/client-framework' 
