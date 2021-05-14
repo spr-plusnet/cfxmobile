@@ -29,5 +29,5 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
     - name: Build with Gradle
       run: ./gradlew build
-      with:
+      env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
