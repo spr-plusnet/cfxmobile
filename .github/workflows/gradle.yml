@@ -27,7 +27,8 @@ jobs:
       run: set ; echo $env.ACCESS_TOKEN
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build 
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
