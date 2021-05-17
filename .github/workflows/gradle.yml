@@ -48,7 +48,7 @@ jobs:
       run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
         
     - name: Set version
-      run: echo version=$VERSION ; ls -l build/jpackage
+      run: echo version=${{env.VERSION}} 
       env:
         VERSION: $(cat version.txt)
 
