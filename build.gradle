@@ -39,14 +39,14 @@ repositories {
 }
 
 dependencies {
-    implementation "org.apache.logging.log4j:log4j-api:2.13.3"
+    implementation "org.apache.logging.log4j:log4j-api:2.14.1"
     implementation "org.prelle:javafx-extensions:5.0.0-SNAPSHOT"
     implementation "de.centraflex:telephony-api:0.0.1-SNAPSHOT"
     implementation "de.plusnet.centraflex:libxsi:2020.07"
     implementation "de.centraflex:callcontrol-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:contacts-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:telephony-xsi:0.0.1-SNAPSHOT"
-    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
     runtimeOnly "org.glassfish.jaxb:jaxb-runtime:3.0.1"
     runtimeOnly ("com.sun.mail:javax.mail:1.6.2") {
        exclude group: "javax.activation"

@@ -42,9 +42,27 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    - name: Dependency listing
-      run: ./gradlew -q dependencies --configuration testRuntimeClasspath
     - name: JLink
       run: ./gradlew jlink 
     - name: JPackage
-      run: ./gradlew jpackage 
+      run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
+        
+    - name: Set version
+      run: echo "::set-env name=VERSION::$(cat version.txt)" ; ls -l build/jpackage
+
+#    - name: Upload RPM
+#      uses: garygrossgarten/github-action-scp@release
+#      with:
+#        local: "build/jpackage/cfxmobile-${{env.VERSION}}-1.x86_64.rpm"
+#        remote: "/var/www/html/downloads/linux/genesis-${{env.VERSION}}-1.x86_64.rpm"
+#        host: eden.rpgframework.de
+#        username: github
+#        password: ${{ secrets.DEPLOY_PASSWORD }}
+#    - name: Upload DEB
+#      uses: garygrossgarten/github-action-scp@release
+#      with:
+#        local: "build/jpackage/cfxmobile_${{env.VERSION}}-1_amd64.deb"
+#        remote: "/var/www/html/downloads/linux/genesis_${{env.VERSION}}-1_amd64.deb"
+#        host: eden.rpgframework.de
+#        username: github
+#        password: ${{ secrets.DEPLOY_PASSWORD }}
