@@ -21,16 +21,27 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
+
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-    
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
     - name: Build with Gradle
       run: ./gradlew build 
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#    - name: Maven Test
-#      run: mvn -B -s settings.xml package 
-#      env:
-#        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+    - name: Maven Test
+      run: mvn -B -s settings.xml package 
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
     - name: Dependency listing
       run: ./gradlew -q dependencies --configuration testRuntimeClasspath
     - name: JLink
