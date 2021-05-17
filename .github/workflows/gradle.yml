@@ -48,7 +48,9 @@ jobs:
       run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
         
     - name: Set version
-      run: echo "::set-env name=VERSION::$(cat version.txt)" ; ls -l build/jpackage
+      run: echo version=$VERSION ; ls -l build/jpackage
+      env:
+        VERSION: $(cat version.txt)
 
 #    - name: Upload RPM
 #      uses: garygrossgarten/github-action-scp@release
