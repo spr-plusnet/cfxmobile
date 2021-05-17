@@ -51,7 +51,7 @@ dependencies {
     runtimeOnly ("com.sun.mail:javax.mail:1.6.2") {
        exclude group: "javax.activation"
     }
-      implementation "com.gluonhq.attach:settings:4.0.11:desktop"
+    implementation "com.gluonhq.attach:settings:4.0.11:desktop"
 }
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
