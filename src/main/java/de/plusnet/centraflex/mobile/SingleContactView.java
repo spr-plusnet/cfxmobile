@@ -1,11 +1,15 @@
 package de.plusnet.centraflex.mobile;
 
 import java.io.ByteArrayInputStream;
+import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.prelle.javafx.JavaFXConstants;
 import org.prelle.javafx.SymbolIcon;
 
 import de.centraflex.contacts.Contact;
+import de.centraflex.telephony.TelephonyService;
 import de.plusnet.centraflex.mobile.cells.ContactCell;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -21,6 +25,9 @@ import javafx.scene.layout.VBox;
  */
 public class SingleContactView extends VBox {
 
+	private final static Logger logger = LogManager.getLogger(SingleContactView.class);
+
+	private TelephonyService service;
 	private Contact data;
 
 	private ImageView iView;
@@ -34,11 +41,13 @@ public class SingleContactView extends VBox {
 	private Button btnDelete;
 
 	//-------------------------------------------------------------------
-	public SingleContactView(Contact data) {
+	public SingleContactView(TelephonyService service, Contact data) {
+		this.service = service;
 		this.data = data;
 
 		initComponents();
 		initLayout();
+		initInteractivity();
 		refresh();
 	}
 
@@ -46,7 +55,7 @@ public class SingleContactView extends VBox {
 	private void initComponents() {
 		iView  = new ImageView();
 		dummy  = new SymbolIcon("Person");
-		dummy.setStyle("-fx-font-isze: 800%");
+		dummy.setStyle("-fx-font-size: 800%");
 		lbName = new Label();
 		lbName.getStyleClass().add(JavaFXConstants.STYLE_HEADING4);
 		lbDepartment = new Label();
@@ -55,10 +64,12 @@ public class SingleContactView extends VBox {
 		lbMobile= new Label();
 		
 		btnCall = new Button("Anrufen", new SymbolIcon("phone"));
+		btnDelete = new Button("Entfernen", new SymbolIcon("remove"));
 	}
 
 	//-------------------------------------------------------------------
 	private void initLayout() {
+		setSpacing(10);
 		setAlignment(Pos.TOP_CENTER);
 
 		getChildren().add(iView);
@@ -66,8 +77,18 @@ public class SingleContactView extends VBox {
 		getChildren().add(lbDepartment);
 
 		TilePane tile = new TilePane(10, 10);
-		tile.getChildren().addAll(lbPhone, lbMobile);
+		tile.getChildren().addAll(lbPhone, lbMobile, btnCall);
 		getChildren().add(tile);
+		
+		logger.info("Groups: "+data.getGroups());
+		if (!data.getGroups().isEmpty()) {
+			getChildren().add(btnDelete);
+		}
+	}
+
+	//-------------------------------------------------------------------
+	private void initInteractivity() {
+		btnCall.setOnAction(ev -> initiateCall());
 	}
 
 	//-------------------------------------------------------------------
@@ -85,6 +106,14 @@ public class SingleContactView extends VBox {
 				iView.setImage(new Image(ContactCell.class.getResourceAsStream("person.png")));				
 			}
 		}
+	}
+
+	//-------------------------------------------------------------------
+	/**
+	 */
+	private void initiateCall() {
+		logger.debug("initiateCall to "+data.getPhoneNumber());
+		service.getCallControlService().createCall(data.getPhoneNumber(), new HashMap<>());
 	}
 
 }

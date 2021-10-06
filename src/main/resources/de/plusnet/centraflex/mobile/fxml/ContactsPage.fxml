@@ -26,12 +26,12 @@
 		</VBox>
 	</secondaryContent>
 	<content>
-		<VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0">
+		<VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" >
 			<children>
-				<HBox alignment="CENTER">
+				<HBox alignment="CENTER" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
 					<children>
 						<TextField fx:id="tfSearch"/>
-						<Button fx:id="btnAction" mnemonicParsing="false" text="Button" />
+						<Button fx:id="btnAction" mnemonicParsing="false" text="%button.search" />
 					</children>
 				</HBox>
 				<HBox fx:id="listBox" spacing="20">

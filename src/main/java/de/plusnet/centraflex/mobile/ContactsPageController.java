@@ -258,6 +258,7 @@ public class ContactsPageController implements TelephonyServiceListener, CallCon
 		logger.debug("refreshList: "+telephony);
 //		bxCurrentCalls.getChildren().clear();
 		List<Contact> data = telephony.getContactManager().getContacts();
+		logger.debug("refreshList: now "+data);
 		list.getItems().setAll(data);
 	}
 
@@ -284,9 +285,11 @@ public class ContactsPageController implements TelephonyServiceListener, CallCon
 
 	//-------------------------------------------------------------------
 	private void selectContact(Contact n) {
+		if (n==null)
+			return;
 		logger.info("Selected "+n);
 		
-		SingleContactView box = new SingleContactView(n);
+		SingleContactView box = new SingleContactView(telephony,n);
 		if (ResponsiveControlManager.getCurrentMode()==WindowMode.MINIMAL) {
 			Page newPage = new Page(ResourceI18N.get(RES, "label.contact"), box);
 			newPage.setId("single-contact");
