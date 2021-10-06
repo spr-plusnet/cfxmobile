@@ -166,7 +166,7 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 		cfHeading.setStyle("-fx-text-fill: rot; -fx-font-weight: bold"); 
 		bxCurrentCalls.setStyle("-fx-padding: 0 2em 0 2em;"); 
 		VBox.setVgrow(bxCurrentCalls, Priority.SOMETIMES);
-		list.setCellFactory( lv -> new CallListItemCell());
+		list.setCellFactory( lv -> new CallListItemCell(this));
 		list.prefWidthProperty().bind(((Region)list.getParent()).widthProperty());
 
 		cfnrTarget.setPrefColumnCount(10);
@@ -531,6 +531,11 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	//-------------------------------------------------------------------
 	private void dial() {
 		String target = tfDialTarget.getText();
+		dial(target);
+	}
+
+	//-------------------------------------------------------------------
+	void dial(String target) {
 		logger.info("Dial '"+target+"' with ring target "+cbRingTarget.getValue());
 
 		CallControlService callCtrl = telephony.getCallControlService();
@@ -574,7 +579,25 @@ class CallListItemCell extends ListCell<CallListItem> {
 			.withZone( ZoneId.systemDefault() );
 
 	private HistoryCallPane personaPane = new HistoryCallPane();
+	
+	private CallPageController controller;
+	
 
+	//-------------------------------------------------------------------
+	public CallListItemCell(CallPageController ctrl) {
+		controller = ctrl;
+		
+		this.setOnMouseClicked(ev -> {
+			if (ev.getClickCount()==2 && (getItem() instanceof CallHistoryItem)) {
+				controller.dial(  ((CallHistoryItem)getItem()).getEntry().getPhoneNumber() );
+			}
+		});
+	}
+	
+	//-------------------------------------------------------------------
+	/**
+	 * @see javafx.scene.control.Cell#updateItem(java.lang.Object, boolean)
+	 */
 	public void updateItem(CallListItem item, boolean empty) {
 		super.updateItem(item, empty);
 		if (empty) {
@@ -614,6 +637,8 @@ class CallListItemCell extends ListCell<CallListItem> {
 			}
 		}
 	}
+	
+	
 }
 
 class HistoryCallPane extends HBox {
