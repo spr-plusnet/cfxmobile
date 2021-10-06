@@ -124,11 +124,11 @@ public class ContactsPageController implements TelephonyServiceListener, CallCon
 //			refreshCallHistory();
 			refreshSettings();
 			refreshList();
-			telephony.getCallControlService().addListener(this);
+//			telephony.getCallControlService().addListener(this);
 		});
-		page.setOnLeaveAction(ev -> {
-			telephony.getCallControlService().removeListener(this);
-		});
+//		page.setOnLeaveAction(ev -> {
+//			telephony.getCallControlService().removeListener(this);
+//		});
 		page.setOnSwipeDown(ev -> {
 			logger.info("Refresh call history");
 //			refreshCallHistory();

@@ -20,9 +20,10 @@
         <Root level="debug" additivity="false">
             <appender-ref ref="console" />
         </Root>
-        <Logger name="prelle.jfx" level="trace" />
+        <Logger name="prelle.jfx" level="warn" />
         <Logger name="xsi.events" level="info" />
         <Logger name="xsi.actions" level="info" />
+        <Logger name="connector.xsi" level="info" />
         <Logger name="de.centraflex.telephony.xsi" level="info" />
     </Loggers>
 </Configuration>

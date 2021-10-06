@@ -15,7 +15,7 @@
 		<maven.compiler.release>11</maven.compiler.release>
 		<javafx.version>16</javafx.version>
 		<javafx.plugin.version>0.0.5</javafx.plugin.version>
-		<client.plugin.version>0.1.39</client.plugin.version>
+		<client.plugin.version>0.9.0</client.plugin.version>
 		<attach.version>4.0.11</attach.version>
 		<mainClassName>de.plusnet.centraflex.mobile.CFXMobileMain</mainClassName>
 		<log4j.version>2.14.1</log4j.version>
@@ -120,7 +120,7 @@
 			</plugin>
 			<plugin>
 				<groupId>com.gluonhq</groupId>
-				<artifactId>client-maven-plugin</artifactId>
+				<artifactId>gluonfx-maven-plugin</artifactId>
 				<version>${client.plugin.version}</version>
 				<configuration>
 					<bundlesList>

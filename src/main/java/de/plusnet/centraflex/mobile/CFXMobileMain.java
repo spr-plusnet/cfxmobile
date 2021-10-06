@@ -54,6 +54,7 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
 
     //-------------------------------------------------------------------
     public static void main(String[] args) {
+    	java.util.logging.LogManager.getLogManager().reset();
         launch();
     }
 
@@ -101,26 +102,27 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
        	try {
 			super.start(stage);
 			Font foo =Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Atlas_Grotesk_Web_Light_Regular.ttf"), 12.0);
-			System.err.println("Loaded font 1 "+foo);
+//			System.err.println("Loaded font 1 "+foo);
 	        ImageIO.getImageReadersByMIMEType("image/jpeg");
 			foo = Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Stratos_Web.ttf"), 12.0);
-			System.err.println("Loaded font 2 "+foo);
+//			System.err.println("Loaded font 2 "+foo);
 //       	this.getAppLayout().setNavigationStyle(NavigationStyle.MOBILE);
 			stage.setWidth(460);
 			stage.setHeight(574);
 			setStyle(stage.getScene(),FlexibleApplication.LIGHT_STYLE);
 			stage.getScene().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-			System.err.println("2");
-			getAppLayout().getNavigationPane().getSelectionModel().select(navCalls);
-			System.err.println("2b");
+//			System.err.println("2");
+//			getAppLayout().getNavigationPane().getSelectionModel().select(navCalls);
+//			System.err.println("2b");
 			getAppLayout().getNavigationPane().setSettingsVisible(false);
-			System.err.println("3");
+//			System.err.println("3");
      
 			prepareXSILogin();
-			System.err.println("4");
+//			System.err.println("4");
 			login();
-			System.err.println("5");
+//			System.err.println("5");
+			getAppLayout().getNavigationPane().getSelectionModel().select(navCalls);
 		} catch (Throwable e) {
 			System.err.println(e.toString());
 			logger.error("Error starting application",e);

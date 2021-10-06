@@ -37,8 +37,9 @@ public class ContactCell extends ListCell<Contact> {
 			if (item.getImage()!=null) {
 				persona.setImage(new Image(new ByteArrayInputStream(item.getImage())));
 			} else {
-				String file = "face_"+(RANDOM.nextBoolean()?"m":"f")+(RANDOM.nextInt(7)+1)+".jpg";
-				file = "face_m"+(RANDOM.nextInt(7)+1)+".jpg";
+//				String file = "face_"+(RANDOM.nextBoolean()?"m":"f")+(RANDOM.nextInt(7)+1)+".jpg";
+//				file = "face_m"+(RANDOM.nextInt(7)+1)+".jpg";
+				String file = "person.png";
 				Image image = new Image(ContactCell.class.getResourceAsStream(file));
 				persona.setImage(image);
 			}

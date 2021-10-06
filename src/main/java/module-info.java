@@ -14,6 +14,7 @@ module cfxmobile {
 	requires javafx.graphics;
 	requires org.apache.logging.log4j;
 	requires java.compiler;
+	requires java.logging;
 	
 	opens de.plusnet.centraflex.mobile to javafx.fxml;
 	opens de.plusnet.centraflex.mobile.cells to javafx.fxml;
