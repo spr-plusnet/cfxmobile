@@ -1,0 +1,6 @@
+[
+	[
+		"jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter",
+		"org.glassfish.jaxb.core.v2.model.annotation.Locatable"
+		]
+]

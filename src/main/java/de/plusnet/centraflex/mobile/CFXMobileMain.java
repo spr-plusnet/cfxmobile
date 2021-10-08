@@ -99,6 +99,9 @@ public class CFXMobileMain extends FlexibleApplication implements CallControlSer
      */
     @Override
     public void start(Stage stage) throws Exception {
+    	// Load some classes for 
+//    	new org.prelle.javafx.Backdrop();
+    	
        	try {
 			super.start(stage);
 			Font foo =Font.loadFont(CFXMobileMain.class.getResourceAsStream("fonts/Atlas_Grotesk_Web_Light_Regular.ttf"), 12.0);

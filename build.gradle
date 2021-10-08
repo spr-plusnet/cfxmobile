@@ -47,11 +47,12 @@ dependencies {
     implementation "de.centraflex:contacts-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:telephony-xsi:0.0.1-SNAPSHOT"
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    runtimeOnly "org.apache.logging.log4j:log4j-core:2.14.1"
     runtimeOnly "org.glassfish.jaxb:jaxb-runtime:3.0.1"
     runtimeOnly ("com.sun.mail:javax.mail:1.6.2") {
        exclude group: "javax.activation"
     }
-    implementation "com.gluonhq.attach:settings:4.0.11:desktop"
+    implementation "com.gluonhq.attach:settings:4.0.13:desktop"
 }
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'

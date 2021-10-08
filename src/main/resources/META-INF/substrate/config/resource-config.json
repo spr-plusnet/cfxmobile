@@ -15,6 +15,7 @@
   "bundles":[
     {"name":"de.plusnet.centraflex.mobile.CFXMobileMain"}, 
     {"name":"de.plusnet.centraflex.mobile.CallPage"}, 
-    {"name":"de.plusnet.centraflex.mobile.LoginDialog"}
+    {"name":"de.plusnet.centraflex.mobile.LoginDialog"},
+    {"name":"org.glassfish.jaxb.runtime.v2.model.impl.Messages"}
   ]
 }

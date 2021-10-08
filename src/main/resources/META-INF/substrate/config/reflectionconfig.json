@@ -7,15 +7,6 @@
   "name":"org.apache.logging.log4j.message.ParameterizedMessageFactory",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-	{
-		"name": "com.sun.xml.bind.v2.ContextFactory",
-		"allDeclaredConstructors": true,
-		"allPublicConstructors": true,
-		"allDeclaredMethods": true,
-		"allPublicMethods": true,
-		"allDeclaredClasses": true,
-		"allPublicClasses": true
-	},
 {
   "name":"javafx.fxml.FXMLLoader"
 },
@@ -209,6 +200,34 @@
 },
 {
   "name":"javafx.stage.Window"
+},
+{
+  "name":"org.prelle.javafx.Backdrop",
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.prelle.javafx.Page",
+  "allDeclaredConstructors" : true,
+  "allPublicConstructors" : true,
+  "allDeclaredMethods" : true,
+  "allPublicMethods" : true,
+  "allDeclaredClasses" : true,
+  "allPublicClasses" : true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.prelle.javafx.skin.BackdropSkin"
+},
+{
+  "name":"de.plusnet.centraflex.mobile.CFXMobileMain",
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"main","parameterTypes":["java.lang.String[]"] }
+  ]
 },
 {
   "name":"de.plusnet.centraflex.mobile.CallPageController",
