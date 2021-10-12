@@ -33,7 +33,7 @@
         </repository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/spr-plusnet/libxsi</url>
+          <url>https://maven.pkg.github.com/spr-plusnet/*</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
