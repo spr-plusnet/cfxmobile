@@ -6,6 +6,8 @@ on: [push]
 #    tags:
 #    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 env:
+  GRAALVM_VERSION: "21.1.0"
+  JAVA_VERSION: "java11"
   LANG: "de_DE.UTF-8"
 
 jobs:
@@ -22,15 +24,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-    
 
-    - name: setup-graalvm-ce
-      uses: rinx/setup-graalvm-ce@v0.0.5
+    - name: Setup GraalVM environment
+      uses: DeLaGuardo/setup-graalvm@master
       with:
-          graalvm-version: "21.1.0"
-          java-version: "java11"
-          native-image: "true"
+        graalvm-version: ${{ env.GRAALVM_VERSION }}.${{ env.JAVA_VERSION }}
 
     - name: Compile
-      run:  export LC_ALL=de_DE.UTF-8; export LC_MESSAGES=de_DE.UTF-8; locale ; mvn -U -s settings.xml clean client:compile
+      run:  export LC_ALL=de_DE.UTF-8; export LC_MESSAGES=de_DE.UTF-8; locale ; mvn -U -s settings.xml clean gluonfx:compile
       env: 
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         JFROG_USER: ${{ secrets.JFROG_USER }}
