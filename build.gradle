@@ -163,14 +163,14 @@ jlink {
             	'--win-dir-chooser',
             	'--win-shortcut', 
             	'--verbose',            	
-            	'--win-upgrade-uuid', '393f86d5-b735-4391-96b7-2b0d27cdf534']
-            imageOptions = ['--icon','src/main/deploy/package/windows/Genesis.ico']
+            	'--win-upgrade-uuid', 'ef6796a4-bac9-46e5-a60d-5d2c7d7bd7fc']
+            imageOptions = ['--icon','src/main/deploy/package/windows/CFXMobile.ico']
          } else {
         	  resourceDir= file("src/main/deploy/package/linux")
             installerType = '' // 'rpm'
             installerOptions = [
                 '--linux-menu-group', 'Centraflex', 
-                '--linux-app-category', 'Game',
+                '--linux-app-category', 'Network',
                 '--linux-shortcut',
                 '--linux-deb-maintainer', 'stefan.prelle@plusnet.de',
                 ]

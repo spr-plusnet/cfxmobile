@@ -103,7 +103,7 @@ jobs:
     - name: JLink
       run: ./gradlew jlink 
     - name: JPackage
-      run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
+      run: ./gradlew jpackage --refresh-dependencies; dir build\jpackage
         
     - name: Set version
       run: echo version=${{env.VERSION}} 
