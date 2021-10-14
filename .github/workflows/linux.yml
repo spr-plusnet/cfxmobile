@@ -1,4 +1,4 @@
-name: Compile Linux
+name: GraalVM Native
 on: [push]
 #on:
 #  push:
