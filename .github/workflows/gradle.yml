@@ -118,3 +118,9 @@ jobs:
 #        host: eden.rpgframework.de
 #        username: github
 #        password: ${{ secrets.DEPLOY_PASSWORD }}
+
+    - name: Upload MSI
+      uses: actions/upload-artifact@v1
+      with:
+        name: CFXMobile-de.apk
+        path: build\jpackage\CFXMobile-${{env.VERSION}}.msi

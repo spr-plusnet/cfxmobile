@@ -9,7 +9,7 @@ plugins {
 // Application Configuration
 ext {
     appName       = "CentraflexMobile"
-    appLauncher   = "CentraflexMobile"
+    appLauncher   = "CFXMobile"
     appPackaging  = "Plusnet GmbH"
      appModuleName = "cfxmobile"
     appMainClass  = "de.plusnet.centraflex.mobile.CFXMobileMain"
