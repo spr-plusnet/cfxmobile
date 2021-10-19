@@ -22,7 +22,7 @@
 	title="%page.title"
 	mode="BACKDROP">
 	<secondaryHeader>
-		<Label fx:id="test" text="Back" />
+		<!--Label fx:id="test" text="Entwicklerversion - kein Support" /-->
 	</secondaryHeader>
 	<secondaryContent>
 		<GridPane fx:id="backOptions" hgap="5.0" vgap="5" styleClass="back-option" >
@@ -58,7 +58,7 @@
 				</HBox>
 				<VBox fx:id="bxCurrentCalls" spacing="5.0"></VBox>
 				<HBox VBox.vgrow="ALWAYS" spacing="10">
-					<ListView fx:id="list" style="-fx-min-width:13em; -fx-pref-width:18em; -fx-max-width:20em" HBox.hgrow="ALWAYS" />
+					<ListView fx:id="list" style="-fx-min-width:15em; -fx-pref-width:18em; -fx-max-width:22em" HBox.hgrow="ALWAYS" />
 					<TilePane tileAlignment="TOP_LEFT" vgap="15" hgap="15" style="-fx-padding: 0.3em; -fx-max-width:40em" HBox.hgrow="SOMETIMES">
 						<!-- Option 1 -->
 						<VBox id="paneDND" styleClass="front-option" maxWidth="-Infinity" visible="false" managed="false">

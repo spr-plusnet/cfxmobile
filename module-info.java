@@ -4,7 +4,6 @@ module cfxmobile {
 
 	requires centraflex.telephony;
 	requires centraflex.telephony.xsi;
-	requires com.gluonhq.attach.settings;
 	requires de.centraflex.libxsi;
 	requires java.desktop;
 	requires javafx.base;
@@ -15,6 +14,7 @@ module cfxmobile {
 	requires org.apache.logging.log4j;
 	requires java.compiler;
 	requires java.logging;
+	requires com.gluonhq.attach.settings;
 	
 	opens de.plusnet.centraflex.mobile to javafx.fxml;
 	opens de.plusnet.centraflex.mobile.cells to javafx.fxml;

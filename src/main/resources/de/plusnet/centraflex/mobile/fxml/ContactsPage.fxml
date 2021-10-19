@@ -18,11 +18,11 @@
 	title="%page.title"
 	mode="BACKDROP">
 	<secondaryHeader>
-		<Label fx:id="test" text="" />
+		<Label fx:id="test" text="Persönliches Telefonbuch und BLF" />
 	</secondaryHeader>
 	<secondaryContent>
-		<VBox>
-			<CheckBox fx:id="cbHideOffline" mnemonicParsing="false" text="%checkbox.hideOffline" />
+		<VBox fx:id="backOptions">
+			<!--CheckBox fx:id="cbHideOffline" mnemonicParsing="false" text="%checkbox.hideOffline" /-->
 		</VBox>
 	</secondaryContent>
 	<content>

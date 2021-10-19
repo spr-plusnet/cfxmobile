@@ -8,6 +8,10 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"java.util.ArrayList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"javafx.fxml.FXMLLoader"
 },
 {
@@ -202,22 +206,79 @@
   "name":"javafx.stage.Window"
 },
 {
+  "name":"org.prelle.javafx.AppLayout",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.prelle.javafx.AppLayout$DisplayMode",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
   "name":"org.prelle.javafx.Backdrop",
-  "methods":[
-    {"name":"<init>","parameterTypes":[] }
-  ]
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.prelle.javafx.IconElement",
+  "allDeclaredConstructors" : true,
+  "allPublicConstructors" : true,
+  "allDeclaredFields" : true,
+  "allPublicFields" : true,
+  "allDeclaredMethods" : true,
+  "allPublicMethods" : true
 },
 {
   "name":"org.prelle.javafx.Page",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "allDeclaredFields" : true,
+  "allPublicFields" : true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.prelle.javafx.Page$Mode",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.prelle.javafx.NavigationItem",
   "allDeclaredConstructors" : true,
-  "allPublicConstructors" : true,
-  "allDeclaredMethods" : true,
-  "allPublicMethods" : true,
-  "allDeclaredClasses" : true,
-  "allPublicClasses" : true,
-  "methods":[
-    {"name":"<init>","parameterTypes":[] }
-  ]
+    "allPublicConstructors" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true
+},
+{
+  "name":"org.prelle.javafx.NavigationItemHeader",
+  "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true
+},
+{
+  "name":"org.prelle.javafx.NavigationPane",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.prelle.javafx.Section",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.prelle.javafx.SymbolIcon",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"org.prelle.javafx.skin.BackdropSkin"
@@ -228,6 +289,21 @@
     {"name":"<init>","parameterTypes":[] }, 
     {"name":"main","parameterTypes":["java.lang.String[]"] }
   ]
+},
+{
+  "name":"de.plusnet.centraflex.mobile.ContactsPageController",
+  "allDeclaredMethods":true,
+  "allPublicConstructors":true,
+  "fields": [
+  	{"name":"test"},
+  	{"name":"backOptions"},
+  	{"name":"cbHideOffline"},
+  	{"name":"tfSearch"},
+  	{"name":"btnAction"},
+  	{"name":"list"},
+  	{"name":"listBox"}
+  ],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"de.plusnet.centraflex.mobile.CallPageController",

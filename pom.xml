@@ -134,6 +134,9 @@
 				<configuration>
 					<bundlesList>
 						<list>de.plusnet.centraflex.mobile.CFXMobileMain</list>
+						<list>de.plusnet.centraflex.mobile.CallPage</list>
+						<list>de.plusnet.centraflex.mobile.ContactsPage</list>
+						<list>de.plusnet.centraflex.mobile.LoginDialog</list>
 						<list>org.prelle.javafx.JavaFXConstants</list>
 						<list>de.plusnet.centraflex.mobile.CallPage</list>
 						<list>jakarta.xml.bind.Messages</list>

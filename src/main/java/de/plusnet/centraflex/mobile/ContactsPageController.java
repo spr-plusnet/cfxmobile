@@ -52,6 +52,8 @@ public class ContactsPageController implements TelephonyServiceListener, CallCon
 	@FXML
 	private Label test;
 	@FXML
+	private VBox backOptions;
+	@FXML
 	private CheckBox cbHideOffline;
 
 	@FXML
@@ -81,6 +83,8 @@ public class ContactsPageController implements TelephonyServiceListener, CallCon
 		VBox.setVgrow(list, Priority.ALWAYS);
 
 		list.prefWidthProperty().bind(((Region)list.getParent()).widthProperty());
+		
+		backOptions.getChildrenUnmodifiable().forEach(child -> child.getStyleClass().add("back-option"));
 	}
 
 	//-------------------------------------------------------------------

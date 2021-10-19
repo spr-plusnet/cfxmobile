@@ -149,7 +149,6 @@ public class CallPageController implements TelephonyServiceListener, CallControl
 	//-------------------------------------------------------------------
 	@FXML
 	public void initialize() {
-		assert test != null : "fx:id=\"test\" was not injected: check your FXML file";
 		assert backOptions != null : "fx:id=\"backOptions\" was not injected: check your FXML file";
 		assert roEnabled != null : "fx:id=\"roEnabled\" was not injected: check your FXML file";
 		assert roTarget  != null : "fx:id=\"roTarget\"  was not injected: check your FXML file";
