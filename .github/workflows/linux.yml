@@ -97,7 +97,7 @@ jobs:
       run: ls target/gluonfx
 
     - name: Package
-      run:  mvn gluonfx:package -Pandroid
+      run:  mvn -s settings.xml gluonfx:package -Pandroid
         
     - name: Show result
       run: |
