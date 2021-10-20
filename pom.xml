@@ -17,7 +17,7 @@
 		<javafx.version>11</javafx.version>
 		<maven.skip.deploy>true</maven.skip.deploy>
 		<maven.skip.install>true</maven.skip.install>
-		<javafx.plugin.version>0.0.5</javafx.plugin.version>
+		<javafx.plugin.version>0.0.8</javafx.plugin.version>
 		<client.plugin.version>1.0.7</client.plugin.version>
 		<attach.version>4.0.13</attach.version>
 		<mainClassName>de.plusnet.centraflex.mobile.CFXMobileMain</mainClassName>
@@ -145,6 +145,7 @@
 					</bundlesList>
 					<enableSWRendering>true</enableSWRendering>
 					<!--javafxStaticSdkVersion>16-ea+gvm31</javafxStaticSdkVersion -->
+					<target>${gluonfx.target}</target>
 					<mainClass>${mainClassName}</mainClass>
 					<nativeImageArgs>
 						<arg>-Duser.language=de</arg>
@@ -204,7 +205,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<client.target>host</client.target>
+				<gluonfx.target>host</gluonfx.target>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -240,13 +241,13 @@
 		<profile>
 			<id>android</id>
 			<properties>
-				<client.target>android</client.target>
+				<gluonfx.target>android</gluonfx.target>
 			</properties>
 		</profile>
 		<profile>
 			<id>ios</id>
 			<properties>
-				<client.target>ios</client.target>
+				<gluonfx.target>ios</gluonfx.target>
 			</properties>
 		</profile>
 	</profiles>
