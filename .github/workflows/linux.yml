@@ -86,7 +86,7 @@ jobs:
         LANG: "de_DE.UTF-8"
 
     - name: Link
-      run:  mvn gluonfx:link -Pandroid
+      run:  mvn -s settings.xml gluonfx:link -Pandroid
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         JFROG_USER: ${{ secrets.JFROG_USER }}
