@@ -109,9 +109,6 @@ jobs:
       run: echo version=${{env.VERSION}} 
       env:
         VERSION: $(cat version.txt)
-        
-    - name: Set version
-      run: echo "::set-env name=VERSION::$(cat version.txt)"
 
 #    - name: Deploy MSI
 #      uses: garygrossgarten/github-action-scp@release
