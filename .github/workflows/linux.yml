@@ -41,7 +41,7 @@ jobs:
       run: sudo apt-get install libgtk-3-dev libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev
 
     - name: Link
-      run:  mvn gluonfx:link
+      run:  mvn -s settings.xml gluonfx:link
         
     - name: Show result
       run: ls target/gluonfx/x86_64-linux
@@ -57,7 +57,7 @@ jobs:
         path: target/gluonfx/x86_64-linux/CFXMobile
       
   android-native:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - name: checkout sources
       uses: actions/checkout@v2
