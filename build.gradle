@@ -8,7 +8,7 @@ plugins {
 
 // Application Configuration
 ext {
-    appName       = "CentraflexMobile"
+    appName       = "CFXMobile"
     appLauncher   = "CFXMobile"
     appPackaging  = "Plusnet GmbH"
      appModuleName = "cfxmobile"
