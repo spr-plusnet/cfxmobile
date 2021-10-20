@@ -111,7 +111,7 @@ jobs:
         VERSION: $(cat version.txt)
         
     - name: Set version
-      run: echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
+      run: dir build\jpackage; echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV 
 
 #    - name: Deploy MSI
 #      uses: garygrossgarten/github-action-scp@release
@@ -127,5 +127,3 @@ jobs:
       with:
         name: CFXMobile-de.apk
         path: build\jpackage\CFXMobile-${{env.VERSION}}.msi
-      env:
-        VERSION: $(cat version.txt)
