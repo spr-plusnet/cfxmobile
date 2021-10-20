@@ -109,8 +109,8 @@ application {
 }
 
 jlink {
-    imageZip = project.file("${buildDir}/distributions/CentraflexMobile-${version}-${javafx.platform.classifier}.zip")
-    imageDir = project.file("${buildDir}/CentraflexMobile-${version}")
+    imageZip = project.file("${buildDir}/distributions/CFXMobile-${version}-${javafx.platform.classifier}.zip")
+    imageDir = project.file("${buildDir}/CFXMobile-${version}")
     options = ['--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
         name = "${appLauncher}"

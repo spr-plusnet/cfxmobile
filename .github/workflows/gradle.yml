@@ -127,3 +127,5 @@ jobs:
       with:
         name: CFXMobile-de.apk
         path: build\jpackage\CFXMobile-${{env.VERSION}}.msi
+      env:
+        VERSION: $(cat version.txt)
