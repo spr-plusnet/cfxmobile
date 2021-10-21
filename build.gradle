@@ -182,7 +182,7 @@ jlink {
             "--copyright", "Plusnet GmbH",
             "--description", "A softclient for the Plusnet Centraflex product",
             "--vendor", "Plusnet GmbH",
-            "--name", "Centraflex Mobile"
+            "--name", "CFXMobile"
         ]
     }
 }
