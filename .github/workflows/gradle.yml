@@ -126,6 +126,6 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: CFXMobile-de.apk
-        path: build\jpackage\CFXMobile-${{env.VERSION}}.msi
+        path: build\jpackage\CFXMobile-*.msi
       env:
         VERSION: $(cat version.txt)
