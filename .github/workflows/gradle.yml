@@ -69,6 +69,58 @@ jobs:
 #        username: github
 #        password: ${{ secrets.DEPLOY_PASSWORD }}
 
+  macos-installer:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 16
+      uses: actions/setup-java@v2
+      with:
+        java-version: '16'
+        distribution: 'adopt'
+
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-    
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build 
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+    - name: Maven Test
+      run: mvn -B -s settings.xml package 
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+    - name: JLink
+      run: ./gradlew jlink 
+    - name: JPackage
+      run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
+
+#    - name: Deploy MSI
+#      uses: garygrossgarten/github-action-scp@release
+#      with:
+#        local: "Genesis\\build\\jpackage\\Genesis-${{env.VERSION}}.msi"
+#        remote: /var/www/html/downloads/win/Genesis-${{env.VERSION}}.msi
+#        host: eden.rpgframework.de
+#        username: github
+#        password: ${{ secrets.DEPLOY_PASSWORD }}
+
+    - name: Upload MSI
+      uses: actions/upload-artifact@v2
+      with:
+        name: CFXMobile-de.dmg
+        path: build/jpackage/CFXMobile-*.dmg
+
+
   windows-installer:
     runs-on: windows-latest
 
@@ -117,7 +169,5 @@ jobs:
     - name: Upload MSI
       uses: actions/upload-artifact@v2
       with:
-        name: CFXMobile-de.apk
+        name: CFXMobile-de.msi
         path: build\jpackage\CFXMobile-*.msi
-      env:
-        VERSION: $(cat version.txt)
