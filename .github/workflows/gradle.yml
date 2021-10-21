@@ -104,17 +104,6 @@ jobs:
       run: ./gradlew jlink 
     - name: JPackage
       run: ./gradlew jpackage --refresh-dependencies; dir build\jpackage
-        
-    - name: Set version
-      run: echo version=${{env.VERSION}} 
-      env:
-        VERSION: $(cat version.txt)
-        
-    - name: Set version
-      run: dir build\jpackage; echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV 
-        
-    - name: Dir
-      run: dir build\jpackage\CFXMobile-${{env.VERSION}}.msi
 
 #    - name: Deploy MSI
 #      uses: garygrossgarten/github-action-scp@release
