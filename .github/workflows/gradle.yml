@@ -126,7 +126,7 @@ jobs:
 #        password: ${{ secrets.DEPLOY_PASSWORD }}
 
     - name: Upload MSI
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: CFXMobile-de.apk
         path: build\jpackage\CFXMobile-*.msi
