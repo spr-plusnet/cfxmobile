@@ -117,4 +117,62 @@ jobs:
       with:
         name: CFXMobile-de.apk
         path: target/gluonfx/aarch64-android/gvm/CFXMobile.apk
+
+  windows-native:
+    runs-on: windows-latest
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v2
+ 
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-    
+
+    - name: Setup GraalVM environment
+      uses: DeLaGuardo/setup-graalvm@master
+      with:
+        graalvm-version: ${{ env.GRAALVM_VERSION }}.${{ env.JAVA_VERSION }}
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Visual Studio shell
+      uses: egor-tensin/vs-shell@v1
+    - name: Foo 
+      uses: ilammy/msvc-dev-cmd@v1
+          
+    - name: Install native image
+      if: steps.cache-graalvm-tarball.outputs.cache-hit != 'true'
+      run: ${{ env.GRAALVM_HOME }}\bin\gu install native-image
+
+    - name: Compile
+      run:  export LC_ALL=de_DE.UTF-8; export LC_MESSAGES=de_DE.UTF-8; locale ; mvn -U -s settings.xml clean gluonfx:compile
+      env: 
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        JFROG_USER: ${{ secrets.JFROG_USER }}
+        JFROG_PASS: ${{ secrets.JFROG_PASS }}
+        LANG: de_DE
+      
+    - name: Install missing packages
+      run: sudo apt-get install libgtk-3-dev libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev
+
+    - name: Link
+      run:  mvn -s settings.xml gluonfx:link
+
+    - name: Logs
+      if: always()      
+      run: cat D:\a\Mondtor\Mondtor\target\gluonfx\x86_64-windows\gvm\log\client-debug0.log
+        
+    - name: Show result
+      shell: cmd
+      run: dir target\gluonfx\x86_64-windows
+
+    - name: Upload Linux binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: CFXMobile-Linux
+        path: target\gluonfx\x86_64-windows\CFXMobile
+      
       
