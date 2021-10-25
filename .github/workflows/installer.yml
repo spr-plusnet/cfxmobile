@@ -37,13 +37,9 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    - name: Maven Test
-      run: mvn -B -s settings.xml package 
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
     - name: JLink
       run: ./gradlew jlink 
+
     - name: JPackage
       run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
         
@@ -107,13 +103,9 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    - name: Maven Test
-      run: mvn -B -s settings.xml package 
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
     - name: JLink
       run: ./gradlew jlink 
+
     - name: JPackage
       run: ./gradlew jpackage --refresh-dependencies; ls build/jpackage
 
@@ -159,13 +151,9 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    - name: Maven Test
-      run: mvn -B -s settings.xml package 
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
     - name: JLink
       run: ./gradlew jlink 
+
     - name: JPackage
       run: ./gradlew jpackage --refresh-dependencies; dir build\jpackage
 
