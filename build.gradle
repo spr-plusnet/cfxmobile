@@ -144,7 +144,7 @@ jlink {
     }
     
     jpackage {
-    	  appVersion = "0.1.0"
+    	  appVersion = "1.0.0"
 				//jpackageHome = '/usr/lib/jvm/java-16-openjdk-16.0.1.0.9-1.rolling.fc33.x86_64/'
         if(os.macOsX) {
             installerOptions = [
