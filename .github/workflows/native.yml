@@ -148,15 +148,12 @@ jobs:
       run: ${{ env.GRAALVM_HOME }}\bin\gu install native-image
 
     - name: Compile
-      run:  export LC_ALL=de_DE.UTF-8; export LC_MESSAGES=de_DE.UTF-8; locale ; mvn -U -s settings.xml clean gluonfx:compile
+      run:  mvn -U -s settings.xml clean gluonfx:compile
       env: 
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         JFROG_USER: ${{ secrets.JFROG_USER }}
         JFROG_PASS: ${{ secrets.JFROG_PASS }}
         LANG: de_DE
-      
-    - name: Install missing packages
-      run: sudo apt-get install libgtk-3-dev libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev
 
     - name: Link
       run:  mvn -s settings.xml gluonfx:link
