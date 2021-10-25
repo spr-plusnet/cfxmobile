@@ -32,6 +32,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Prepare with Maven
+      run: mvn -B -s settings.xml package 
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
     - name: Build with Gradle
       run: ./gradlew build 
       env:
@@ -98,6 +103,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Prepare with Maven
+      run: mvn -B -s settings.xml package 
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
     - name: Build with Gradle
       run: ./gradlew build 
       env:
@@ -145,6 +155,11 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Prepare with Maven
+      run: mvn -B -s settings.xml package 
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
     - name: Build with Gradle
       run: ./gradlew build 
