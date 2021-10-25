@@ -62,7 +62,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: CFXMobile-de.deb
-        path: build/jpackage/cfxmobile-*.deb
+        path: build/jpackage/cfxmobile_*.deb
 
 #    - name: Upload RPM
 #      uses: garygrossgarten/github-action-scp@release
