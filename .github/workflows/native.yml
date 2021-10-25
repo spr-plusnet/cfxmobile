@@ -170,6 +170,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: CFXMobile-Win64
-        path: target\gluonfx\x86_64-windows\CFXMobile
+        path: target\gluonfx\x86_64-windows\CFXMobile.exe
       
       
