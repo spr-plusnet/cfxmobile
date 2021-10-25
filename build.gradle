@@ -144,7 +144,7 @@ jlink {
     }
     
     jpackage {
-    	  appVersion = $version
+    	  appVersion = rootProject.file('version.txt').text.trim()
 				//jpackageHome = '/usr/lib/jvm/java-16-openjdk-16.0.1.0.9-1.rolling.fc33.x86_64/'
         if(os.macOsX) {
             installerOptions = [
