@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>de.plusnet.centraflex</groupId>
 			<artifactId>libxsi</artifactId>
-			<version>2020.07</version>
+			<version>2020.07.03</version>
 		</dependency>
 		<dependency>
 			<groupId>de.centraflex</groupId>
