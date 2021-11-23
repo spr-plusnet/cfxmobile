@@ -42,7 +42,7 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-api:2.14.1"
     implementation "org.prelle:javafx-extensions:5.0.0-SNAPSHOT"
     implementation "de.centraflex:telephony-api:0.0.1-SNAPSHOT"
-    implementation "de.plusnet.centraflex:libxsi:2020.07"
+    implementation "de.plusnet.centraflex:libxsi:2020.07.03"
     implementation "de.centraflex:callcontrol-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:contacts-xsi:0.0.1-SNAPSHOT"
     implementation "de.centraflex:telephony-xsi:0.0.1-SNAPSHOT"
