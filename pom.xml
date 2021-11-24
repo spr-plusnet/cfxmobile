@@ -18,7 +18,7 @@
 		<maven.skip.deploy>true</maven.skip.deploy>
 		<maven.skip.install>true</maven.skip.install>
 		<javafx.plugin.version>0.0.8</javafx.plugin.version>
-		<client.plugin.version>1.0.8</client.plugin.version>
+		<client.plugin.version>1.0.9</client.plugin.version>
 		<attach.version>4.0.13</attach.version>
 		<mainClassName>de.plusnet.centraflex.mobile.CFXMobileMain</mainClassName>
 		<log4j.version>2.14.1</log4j.version>
